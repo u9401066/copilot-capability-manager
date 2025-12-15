@@ -1,3 +1,8 @@
+---
+name: project-init
+description: Initialize new projects using this template. Use when initializing new project, creating from template, or saying "create new project".
+---
+
 # 專案初始化技能
 
 ## 描述

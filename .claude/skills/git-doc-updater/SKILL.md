@@ -1,3 +1,8 @@
+---
+name: git-doc-updater
+description: Auto-check and update key documentation before Git commits to keep docs in sync with code. Use when committing, pushing, or preparing releases.
+---
+
 # Git 文檔自動更新技能
 
 ## 描述

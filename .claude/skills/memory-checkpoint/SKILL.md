@@ -1,3 +1,8 @@
+---
+name: memory-checkpoint
+description: Externalize detailed memory to Memory Bank before conversation summarization to prevent context loss. Use when saying "checkpoint", "save memory", "sync memory", or after long conversations.
+---
+
 # Memory Checkpoint 技能 (記憶檢查點)
 
 ## 描述

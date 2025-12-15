@@ -1,3 +1,8 @@
+---
+name: memory-updater
+description: Update and maintain Memory Bank files (activeContext, progress, decisionLog). Use when updating memory bank, recording progress, or at session end.
+---
+
 # Memory Bank 更新技能
 
 ## 描述

@@ -1,3 +1,8 @@
+---
+name: git-precommit
+description: Orchestrate pre-commit workflow including Memory Bank sync, README/CHANGELOG/ROADMAP updates. Use when preparing to commit, saying "準備 commit", "要提交了", or "git commit".
+---
+
 # Git 提交前工作流（編排器）
 
 ## 描述

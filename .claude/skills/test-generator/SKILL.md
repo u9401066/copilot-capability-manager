@@ -1,3 +1,8 @@
+---
+name: test-generator
+description: Generate comprehensive test suites including static analysis, unit tests, integration tests, E2E tests, and coverage reports. Use when generating tests, writing tests, or saying "test this", "coverage".
+---
+
 # 測試生成技能
 
 ## 描述

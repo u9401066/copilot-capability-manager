@@ -1,42 +1,50 @@
-# Workspace251215
+# template-is-all-you-need
 
-> 🏗️ AI 輔助開發專案模板 - 整合 Claude Skills、Memory Bank 與憲法-子法架構
+> 🏗️ AI-Assisted Development Project Template with Claude Skills, Memory Bank & Constitution-Bylaw Architecture
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-## ✨ 特色
+🌐 [繁體中文](README.zh-TW.md)
 
-- 🏛️ **憲法-子法架構** - 類似 speckit 的層級規則系統
-- 🤖 **Claude Skills** - 9 個模組化 AI 技能
-- 📝 **Memory Bank** - 跨對話專案記憶系統
-- 🏗️ **DDD 架構** - Domain-Driven Design + DAL 獨立
-- 🔄 **Git 自動化** - 提交前自動更新文檔
+## ✨ Features
 
-## 📁 專案結構
+- 🏛️ **Constitution-Bylaw Architecture** - Hierarchical rule system inspired by speckit
+- 🤖 **Claude Skills** - 12+ modular AI skills for development automation
+- 📝 **Memory Bank** - Cross-conversation project memory system
+- 🏗️ **DDD Architecture** - Domain-Driven Design with independent DAL
+- 🔄 **Git Automation** - Auto-update documentation before commits
+- 🐍 **Python Environment** - uv-first package management
+
+## 📁 Project Structure
 
 ```
-workspace251215/
-├── CONSTITUTION.md          # 📜 專案憲法（最高原則）
+template-is-all-you-need/
+├── CONSTITUTION.md          # 📜 Project Constitution (Highest Principles)
 ├── .github/
-│   ├── bylaws/              # 📋 子法
+│   ├── bylaws/              # 📋 Bylaws
 │   │   ├── ddd-architecture.md
 │   │   ├── git-workflow.md
-│   │   └── memory-bank.md
+│   │   ├── memory-bank.md
+│   │   └── python-environment.md
 │   ├── workflows/           # ⚙️ CI/CD
-│   ├── ISSUE_TEMPLATE/      # 📝 Issue 模板
+│   ├── ISSUE_TEMPLATE/      # 📝 Issue Templates
 │   └── copilot-instructions.md
 ├── .claude/skills/          # 🤖 Claude Skills
-│   ├── git-precommit/       # Git 提交編排器
-│   ├── ddd-architect/       # DDD 架構輔助
-│   ├── memory-updater/      # Memory Bank 同步
-│   ├── readme-updater/      # README 更新
-│   ├── changelog-updater/   # CHANGELOG 更新
-│   ├── roadmap-updater/     # ROADMAP 更新
-│   ├── code-reviewer/       # 程式碼審查
-│   ├── test-generator/      # 測試生成
-│   └── project-init/        # 專案初始化
-├── memory-bank/             # 🧠 專案記憶
-├── README.md
+│   ├── git-precommit/       # Git commit orchestrator
+│   ├── ddd-architect/       # DDD architecture assistant
+│   ├── code-refactor/       # Code refactoring
+│   ├── memory-updater/      # Memory Bank sync
+│   ├── memory-checkpoint/   # Pre-summarization checkpoint
+│   ├── readme-updater/      # README updates
+│   ├── readme-i18n/         # README internationalization
+│   ├── changelog-updater/   # CHANGELOG updates
+│   ├── roadmap-updater/     # ROADMAP updates
+│   ├── code-reviewer/       # Code review
+│   ├── test-generator/      # Test generation
+│   └── project-init/        # Project initialization
+├── memory-bank/             # 🧠 Project Memory
+├── README.md                # This file (English)
+├── README.zh-TW.md          # Chinese version
 ├── CHANGELOG.md
 ├── ROADMAP.md
 ├── ARCHITECTURE.md
@@ -46,62 +54,69 @@ workspace251215/
 └── LICENSE
 ```
 
-## 🚀 快速開始
+## 🚀 Quick Start
 
-### 作為模板使用
+### Use as Template
 
 ```bash
-# 1. Clone 專案
-git clone https://github.com/your-username/workspace251215.git my-project
+# Option 1: GitHub CLI
+gh repo create my-project --template u9401066/template-is-all-you-need
 
-# 2. 進入目錄
+# Option 2: Manual clone
+git clone https://github.com/u9401066/template-is-all-you-need.git my-project
 cd my-project
-
-# 3. 重置 Git
 rm -rf .git && git init
-
-# 4. 在 VS Code 中開啟
-code .
 ```
 
-### VS Code 設定
+### VS Code Setup
 
-確保已安裝 GitHub Copilot，專案會自動啟用：
-- Claude Skills 支援
-- 自定義指令
-- Agent 模式
+Ensure GitHub Copilot is installed. The project auto-enables:
+- Claude Skills support
+- Custom instructions
+- Agent mode
 
-## 🤖 Skills 使用
+## 🤖 Skills Usage
 
-| 指令 | 功能 |
-|------|------|
-| 「準備 commit」 | 執行完整 Git 提交流程 |
-| 「快速 commit」 | 只同步 Memory Bank |
-| 「建立新功能 X」 | 生成 DDD 結構 |
-| 「review 程式碼」 | 程式碼審查 |
-| 「生成測試」 | 自動生成測試 |
+| Command | Function |
+|---------|----------|
+| "prepare commit" | Execute full Git commit workflow |
+| "quick commit" | Sync Memory Bank only |
+| "create feature X" | Generate DDD structure |
+| "review code" | Code review |
+| "generate tests" | Auto-generate tests |
+| "checkpoint" | Save memory before context loss |
 
-## 🏛️ 架構原則
+## 🏛️ Architecture Principles
 
-本專案遵循：
+This project follows:
 
-1. **DDD (Domain-Driven Design)** - 領域驅動設計
-2. **DAL 獨立** - 資料存取層分離
-3. **文檔優先** - 程式碼是文檔的編譯產物
-4. **Memory Bank 綁定** - 操作即時同步記憶
+1. **DDD (Domain-Driven Design)** - Domain-driven architecture
+2. **Independent DAL** - Separated Data Access Layer
+3. **Documentation First** - Code is compiled documentation
+4. **Memory Bank Binding** - Operations sync with memory in real-time
 
-詳見 [CONSTITUTION.md](CONSTITUTION.md)
+See [CONSTITUTION.md](CONSTITUTION.md) for details.
 
-## 📋 文檔
+## 📋 Documentation
 
-- [憲法](CONSTITUTION.md) - 最高原則
-- [架構說明](ARCHITECTURE.md) - 系統架構
-- [變更日誌](CHANGELOG.md) - 版本歷史
-- [路線圖](ROADMAP.md) - 功能規劃
-- [貢獻指南](CONTRIBUTING.md) - 如何貢獻
-- [CLAUDE.md](CLAUDE.md) - Claude Code 專用指引
-- [AGENTS.md](AGENTS.md) - VS Code Copilot Agent 指引
+- [Constitution](CONSTITUTION.md) - Highest principles
+- [Architecture](ARCHITECTURE.md) - System architecture
+- [Changelog](CHANGELOG.md) - Version history
+- [Roadmap](ROADMAP.md) - Feature planning
+- [Contributing](CONTRIBUTING.md) - How to contribute
+- [CLAUDE.md](CLAUDE.md) - Claude Code guidelines
+- [AGENTS.md](AGENTS.md) - VS Code Copilot Agent guidelines
 
-## 📄 授權
+## 🧪 Testing Support
+
+The template includes comprehensive testing configuration:
+
+- **Static Analysis**: ruff, mypy, bandit
+- **Unit Tests**: pytest with 80% coverage requirement
+- **Integration Tests**: pytest-asyncio
+- **E2E Tests**: Playwright
+- **CI/CD**: GitHub Actions with 6 jobs
+
+## 📄 License
 
 [Apache License 2.0](LICENSE)

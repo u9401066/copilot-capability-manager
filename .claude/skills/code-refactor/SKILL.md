@@ -1,3 +1,8 @@
+---
+name: code-refactor
+description: Proactively detect and execute code refactoring to maintain DDD architecture and code quality. Use when refactoring code, modularizing, or when file exceeds size thresholds.
+---
+
 # 程式碼重構技能
 
 ## 描述

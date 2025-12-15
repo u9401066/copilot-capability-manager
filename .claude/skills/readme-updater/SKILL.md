@@ -1,3 +1,8 @@
+---
+name: readme-updater
+description: Intelligently update README.md to sync with code changes. Use when updating README, after adding features, or as part of git-precommit workflow.
+---
+
 # README 更新技能
 
 ## 描述

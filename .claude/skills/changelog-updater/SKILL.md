@@ -1,3 +1,8 @@
+---
+name: changelog-updater
+description: Auto-update CHANGELOG.md following Keep a Changelog format. Use when updating changelog, recording version changes, or as part of git-precommit workflow.
+---
+
 # CHANGELOG 更新技能
 
 ## 描述

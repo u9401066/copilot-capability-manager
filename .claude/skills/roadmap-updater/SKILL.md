@@ -1,3 +1,8 @@
+---
+name: roadmap-updater
+description: Auto-update ROADMAP.md status based on completed features. Use when updating roadmap, marking features complete, or as part of git-precommit workflow.
+---
+
 # ROADMAP 更新技能
 
 ## 描述

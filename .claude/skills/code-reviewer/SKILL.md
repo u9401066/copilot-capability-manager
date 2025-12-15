@@ -1,3 +1,8 @@
+---
+name: code-reviewer
+description: Comprehensive code review checking quality, security, and best practices. Use when reviewing code, checking PRs, or saying "review", "code review".
+---
+
 # 程式碼審查技能
 
 ## 描述

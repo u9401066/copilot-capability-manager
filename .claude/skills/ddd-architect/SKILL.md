@@ -1,3 +1,8 @@
+---
+name: ddd-architect
+description: Ensure code follows DDD architecture and DAL separation principles. Use when creating new features, modules, checking architecture, or creating new files.
+---
+
 # DDD 架構輔助技能
 
 ## 描述
