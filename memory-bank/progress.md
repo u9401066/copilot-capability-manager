@@ -10,11 +10,16 @@
 - [x] 建立憲法-子法層級架構 (2025-12-15)
 - [x] 重構 Skills 為可組合模組 (2025-12-15)
 - [x] 新增 DDD 架構輔助 Skill (2025-12-15)
+- [x] 完善專案模板 (2025-12-15)
+  - LICENSE, CONTRIBUTING, CODE_OF_CONDUCT, SECURITY
+  - Issue/PR 模板
+  - GitHub Actions CI
+  - project-init Skill
 
 ## Doing
-- [ ] 測試 Skill 編排器流程
+- [ ] 測試完整工作流程
 
 ## Next
-- [ ] 新增更多實用 Skills
-- [ ] 建立 DDD 專案模板
-- [ ] 參考社群 Skills 優化現有功能
+- [ ] 發布為 GitHub Template Repository
+- [ ] 建立文檔網站
+- [ ] 新增更多語言專用 Skills
