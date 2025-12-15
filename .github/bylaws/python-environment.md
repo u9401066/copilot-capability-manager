@@ -190,7 +190,7 @@ jobs:
 ```dockerfile
 FROM python:3.11-slim
 
-# 安裝 uv
+# 安裝 uv（從官方映像複製）
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /usr/local/bin/uv
 
 WORKDIR /app
@@ -201,6 +201,17 @@ RUN uv pip install --system --no-cache -r pyproject.toml
 
 COPY . .
 CMD ["python", "-m", "src.main"]
+```
+
+### 5.3 uvx 工具執行（類似 npx）
+```bash
+# 臨時執行工具（不安裝）
+uvx ruff check .
+uvx black --check .
+uvx mypy src/
+
+# 執行特定版本
+uvx ruff@0.1.0 check .
 ```
 
 ---
