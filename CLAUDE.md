@@ -72,6 +72,7 @@ uv add --dev pytest ruff mypy
 |-------|------|
 | `git-precommit` | Git 提交前編排器 |
 | `ddd-architect` | DDD 架構輔助 |
+| `code-refactor` | 主動重構與模組化 |
 | `memory-updater` | Memory Bank 同步 |
 | `memory-checkpoint` | 記憶檢查點（Summarize 前外部化） |
 | `readme-updater` | README 智能更新 |
