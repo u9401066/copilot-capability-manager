@@ -4,7 +4,21 @@ Copilot Capability Manager 開發路線圖。
 
 ## 願景
 
-**成為 VS Code 擴充套件**，提供 GUI 介面管理 AI Skills 並組合成自動化工作流程。
+**成為 VS Code 擴充套件**，提供 GUI 介面管理 AI Skills 並組合成 **經驗證的能力路徑 (Validated Skill Pathway)**。
+
+> 🛤️ **Capability = Validated Skill Pathway**
+> 不只是 workflow，而是經過驗證的「能力路徑」
+
+---
+
+## 核心創新
+
+| 特性 | 一般 Workflow | Skill Pathway (我們) |
+|------|--------------|---------------------|
+| 結構 | 線性步驟 | **有向圖 + 權重** |
+| 驗證 | 無 | **自動驗證 + 認證** |
+| 視覺化 | 流程圖 | **拓撲圖 + 熱力圖** |
+| 統計 | 無 | **使用頻率、成功率** |
 
 ---
 
@@ -114,19 +128,42 @@ Copilot Capability Manager 開發路線圖。
 
 **目標**：擴展生態系統
 
-### 5.1 Skill 市集
+### 5.1 Skill Pathway 視覺化 ⭐ 創新功能
+
+- [ ] 有向圖顯示 (React Flow)
+- [ ] 節點大小 = 使用頻率
+- [ ] 邊粗細 = 轉換頻率
+- [ ] 熱力圖模式
+- [ ] 時間軸視圖
+
+### 5.2 能力驗證機制 ⭐ 創新功能
+
+- [ ] 驗證等級系統 (Draft → Certified)
+- [ ] 自動驗證規則 (成功率、執行次數)
+- [ ] 人工審核流程
+- [ ] 驗證報告生成
+- [ ] 徽章系統 (⚪🔵🟢⭐🏆)
+
+### 5.3 統計儀表板
+
+- [ ] 使用趨勢圖表
+- [ ] Skill 排行榜
+- [ ] Pathway 效能分析
+- [ ] 成功率趨勢
+
+### 5.4 Skill 市集
 
 - [ ] 匯出 Skill 為可分享格式
 - [ ] 匯入他人 Skills
 - [ ] 線上 Skill Gallery（未來）
 
-### 5.2 團隊協作
+### 5.5 團隊協作
 
 - [ ] Skill 版本控制
 - [ ] 團隊共享設定
 - [ ] 權限管理
 
-### 5.3 雲端同步
+### 5.6 雲端同步
 
 - [ ] 設定同步
 - [ ] Skills 備份
@@ -145,7 +182,9 @@ Copilot Capability Manager 開發路線圖。
 | M3 | Skill Manager 可用 | 📋 計劃 |
 | M4 | Capability Builder 可用 | 📋 計劃 |
 | M5 | MCP 整合完成 | 📋 計劃 |
-| M6 | 發布到 Marketplace | 📋 計劃 |
+| M6 | **Skill Pathway 視覺化** | 📋 計劃 |
+| M7 | **能力驗證系統** | 📋 計劃 |
+| M8 | 發布到 Marketplace | 📋 計劃 |
 
 ---
 
@@ -157,4 +196,5 @@ Copilot Capability Manager 開發路線圖。
 | v0.2.0 | Extension 基礎 + Skill Manager | 2025-01 |
 | v0.3.0 | Capability Builder | 2025-02 |
 | v0.4.0 | MCP 整合 | 2025-03 |
+| v0.5.0 | **Skill Pathway + 驗證** | 2025-04 |
 | v1.0.0 | 正式發布 | 2025-Q2 |
