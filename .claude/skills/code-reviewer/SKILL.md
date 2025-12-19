@@ -1,6 +1,9 @@
 ---
 name: code-reviewer
-description: Comprehensive code review checking quality, security, and best practices. Triggers: CR, review, 審查, 檢查, check, 看一下, PR, code review, 品質.
+description: |
+  Automated code review for quality, security, and best practices.
+  LOAD THIS SKILL WHEN: User asks to "review", "check", "audit" code | mentions "PR", "pull request" | discusses "code quality", "bugs", "security" | says "幫我看", "檢查", "審查" | before git commits.
+  CAPABILITIES: naming conventions, DRY principle, complexity analysis, SQL injection, XSS, memory leaks, test coverage.
 ---
 
 # 程式碼審查技能

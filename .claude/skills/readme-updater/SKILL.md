@@ -1,24 +1,31 @@
 ---
 name: readme-updater
-description: Intelligently update README.md to sync with code changes. Triggers: readme, 說明, 更新說明, update readme, 文檔同步.
+description: |
+  Intelligently update README.md to sync with code changes.
+  LOAD THIS SKILL WHEN: User says "更新 README", "update readme" | new features added | dependencies changed | project structure modified.
+  CAPABILITIES: Detect change type, update feature list, update installation, update examples, preserve license/contributing sections.
 ---
 
 # README 更新技能
 
 ## 描述
+
 智能更新 README.md，保持與程式碼同步。
 
 ## 觸發條件
+
 - 「更新 README」
 - 被 git-precommit 編排器調用
 - 新增重要功能後
 
 ## 法規依據
+
 - 憲法：CONSTITUTION.md 第 6 條
 
 ## 更新策略
 
 ### 1. 偵測變更類型
+
 - 新功能 → 更新功能列表
 - 新依賴 → 更新安裝說明
 - API 變更 → 更新使用範例
@@ -26,16 +33,18 @@ description: Intelligently update README.md to sync with code changes. Triggers:
 
 ### 2. 更新區塊
 
-| 區塊 | 條件 |
-|------|------|
+| 區塊     | 條件          |
+| -------- | ------------- |
 | 功能列表 | 新增/移除功能 |
-| 安裝說明 | 依賴變更 |
-| 使用範例 | API 變更 |
-| 專案結構 | 目錄結構變更 |
-| 配置說明 | 新增設定選項 |
+| 安裝說明 | 依賴變更      |
+| 使用範例 | API 變更      |
+| 專案結構 | 目錄結構變更  |
+| 配置說明 | 新增設定選項  |
 
 ### 3. 保持區塊
+
 以下區塊不自動修改：
+
 - 授權資訊
 - 貢獻指南
 - 致謝

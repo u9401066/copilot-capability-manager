@@ -57,6 +57,27 @@ python .claude/capability-manager/cp.py {workflow_name} "{參數}"
 - 參見子法：`.github/bylaws/git-workflow.md`
 - 觸發 Skill：`git-precommit`
 
+---
+
+## 🎯 Skill 自動觸發指引
+
+**重要**：當偵測到以下情境時，你必須主動讀取對應的 SKILL.md 檔案！
+
+| 情境 | 讀取 Skill | 路徑 |
+|------|------------|------|
+| 用戶要 commit/push/提交 | `git-precommit` | `.claude/skills/git-precommit/SKILL.md` |
+| 完成任務/對話結束 | `memory-updater` | `.claude/skills/memory-updater/SKILL.md` |
+| 審查/檢查程式碼 | `code-reviewer` | `.claude/skills/code-reviewer/SKILL.md` |
+| 重構/拆分/模組化 | `code-refactor` | `.claude/skills/code-refactor/SKILL.md` |
+| 寫測試/測試覆蓋 | `test-generator` | `.claude/skills/test-generator/SKILL.md` |
+| 更新 README | `readme-updater` | `.claude/skills/readme-updater/SKILL.md` |
+| 更新 CHANGELOG | `changelog-updater` | `.claude/skills/changelog-updater/SKILL.md` |
+| 新功能/新模組 | `ddd-architect` | `.claude/skills/ddd-architect/SKILL.md` |
+
+**執行方式**：讀取 SKILL.md → 依照指令執行 → 更新 Memory Bank
+
+---
+
 ## 回應風格
 - 使用繁體中文
 - 提供清晰的步驟說明

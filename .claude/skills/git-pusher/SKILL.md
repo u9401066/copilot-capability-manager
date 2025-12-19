@@ -1,10 +1,10 @@
 ```markdown
 ---
 name: git-pusher
-description: Git 推送技能 - Git commit、push、觸發 CI。觸發詞：push, 推送, git push, deploy, 部署, 上傳。
-skill_id: git-pusher
-category: deployment
-priority: 40
+description: |
+  Execute Git commit, push, and trigger CI workflows.
+  LOAD THIS SKILL WHEN: User says "push", "推送", "git push", "deploy", "部署" | after completing commits | ready to deploy.
+  CAPABILITIES: Pre-push checks, Conventional Commits format, CI status monitoring, force-push with lease.
 ---
 
 # Git 推送技能

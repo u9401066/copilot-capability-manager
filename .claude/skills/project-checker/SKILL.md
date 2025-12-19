@@ -1,10 +1,10 @@
 ```markdown
 ---
 name: project-checker
-description: 專案檢查技能 - 檢查專案狀態、文件完整性、架構合規性。觸發詞：check, 檢查, 專案狀態, project check, 檢查專案, 狀態檢查。
-skill_id: project-checker
-category: project-management
-priority: 10
+description: |
+  Comprehensive project health check for documentation, architecture, and code quality.
+  LOAD THIS SKILL WHEN: User says "檢查專案", "project check", "專案狀態" | before releases | reviewing project health | onboarding new contributors.
+  CHECKS: File completeness (README, CHANGELOG, LICENSE), Memory Bank status, DDD compliance, test coverage, Git status.
 ---
 
 # 專案檢查技能

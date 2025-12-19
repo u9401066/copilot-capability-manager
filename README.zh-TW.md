@@ -101,6 +101,7 @@ rm -rf .git && git init
 
 - [憲法](CONSTITUTION.md) - 最高原則
 - [架構說明](ARCHITECTURE.md) - 系統架構
+- [**能力系統指南**](docs/CAPABILITY-GUIDE.md) - 📚 如何新增 Skill 與 Workflow
 - [變更日誌](CHANGELOG.md) - 版本歷史
 - [路線圖](ROADMAP.md) - 功能規劃
 - [貢獻指南](CONTRIBUTING.md) - 如何貢獻

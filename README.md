@@ -96,8 +96,10 @@ copilot-capability-manager/
 ## 📖 文檔
 
 - [架構設計](ARCHITECTURE.md) - 系統架構與組件設計
+- [**能力系統指南**](docs/CAPABILITY-GUIDE.md) - 📚 如何新增 Skill 與 Workflow
 - [擴充套件設計](docs/EXTENSION-DESIGN.md) - VS Code Extension 詳細設計
 - [Prompt Files 機制](docs/PROMPT-FILES-MECHANISM.md) - 當前運作原理
+- [Skill 改進分析](docs/SKILL-IMPROVEMENT-ANALYSIS.md) - Skill 觸發機制改進
 - [AGENTS.md](AGENTS.md) - Agent 指引
 - [Roadmap](ROADMAP.md) - 開發路線圖
 

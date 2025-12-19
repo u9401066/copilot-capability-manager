@@ -1,6 +1,9 @@
 ---
 name: test-generator
-description: Generate comprehensive test suites including static analysis, unit tests, integration tests, E2E tests, and coverage reports. Triggers: TG, test, 測試, 寫測試, coverage, 覆蓋率, pytest, unittest, 驗證.
+description: |
+  Generate comprehensive test suites following the test pyramid: static analysis → unit → integration → E2E.
+  LOAD THIS SKILL WHEN: User says "寫測試", "test", "測試", "TG", "coverage", "覆蓋率", "pytest", "unittest", "驗證" | wants test generation | asks about testing strategy | needs coverage report | code review requires tests | before release/deployment.
+  CAPABILITIES: pytest configuration, mypy/ruff/bandit static analysis, parametrized tests, fixtures/conftest, async testing, httpx API tests, Playwright E2E, coverage reports (pytest-cov), CI integration, test data factories (factory-boy/faker).
 ---
 
 # 測試生成技能

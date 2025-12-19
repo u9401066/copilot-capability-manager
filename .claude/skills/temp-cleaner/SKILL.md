@@ -1,10 +1,9 @@
-```markdown
 ---
 name: temp-cleaner
-description: 臨時檔案清理技能 - 清理暫存檔、快取、build 產物。觸發詞：clean, 清理, 清除, 刪除暫存, clean temp, 清理快取。
-skill_id: temp-cleaner
-category: maintenance
-priority: 50
+description: |
+  Clean temporary files, caches, and build artifacts.
+  LOAD THIS SKILL WHEN: User says "清理", "clean", "刪除暫存", "清除快取" | disk space issues | before archiving | end of workflow.
+  CAPABILITIES: Python cache (__pycache__, .pytest_cache), Node.js (dist, .cache), safe deletion with confirmation, protected files list.
 ---
 
 # 臨時檔案清理技能

@@ -1,10 +1,9 @@
-```markdown
 ---
 name: file-restructurer
-description: 檔案重構技能 - 重組檔案結構、資料夾整理、模組化。觸發詞：restructure, 重構, 整理資料夾, reorganize, 重組檔案, 模組化。
-skill_id: file-restructurer
-category: maintenance
-priority: 60
+description: |
+  Restructure project files, reorganize folders, and modularize code.
+  LOAD THIS SKILL WHEN: Project structure is messy | User says "整理資料夾", "重構結構", "reorganize", "模組化" | files exceed 500 lines | need DDD folder structure.
+  CAPABILITIES: Folder reorganization, module splitting, import path updates, backup/rollback, dry-run preview.
 ---
 
 # 檔案重構技能

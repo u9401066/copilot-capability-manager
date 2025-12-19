@@ -1,6 +1,9 @@
 ---
 name: code-refactor
-description: Proactively detect and execute code refactoring to maintain DDD architecture and code quality. Triggers: RF, refactor, 重構, 拆分, split, 模組化, modularize, 太長, cleanup.
+description: |
+  Proactively detect and execute code refactoring to maintain DDD architecture and code quality.
+  LOAD THIS SKILL WHEN: Code file exceeds 200 lines | function exceeds 30 lines | User says "refactor", "重構", "拆分", "模組化", "太長" | cyclomatic complexity > 10 | deeply nested code.
+  CAPABILITIES: Extract Method, Extract Class, Split Module, Replace Conditional with Polymorphism, DDD architecture compliance.
 ---
 
 # 程式碼重構技能

@@ -1,6 +1,9 @@
 ---
 name: git-doc-updater
-description: Auto-check and update key documentation before Git commits to keep docs in sync with code. Triggers: docs, 文檔, 更新文檔, sync docs, release, 發布.
+description: |
+  Auto-check and update key documentation before Git commits to keep docs in sync with code.
+  LOAD THIS SKILL WHEN: Before git commit/push | User says "準備提交", "sync docs", "發布", "release" | code changes affect documentation.
+  CAPABILITIES: Update README, CHANGELOG, ROADMAP, ARCHITECTURE, Memory Bank; minimal changes; semantic versioning; Keep a Changelog format.
 ---
 
 # Git 文檔自動更新技能

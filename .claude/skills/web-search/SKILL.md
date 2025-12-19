@@ -1,7 +1,9 @@
-```markdown
 ---
 name: web-search
-description: 網路檢索技能 - 搜尋網路資源、文獻、API 文檔等。觸發詞：search, 搜尋, 檢索, 查找, 找資料, web search, 網路搜尋。
+description: |
+  Web research and literature search capabilities for external resources.
+  LOAD THIS SKILL WHEN: User says "搜尋", "search", "找資料", "查詢", "檢索", "web search", "網路搜尋" | needs external documentation | research task | API reference lookup | technology comparison | wants latest information.
+  CAPABILITIES: Technical docs (MDN, GitHub, Stack Overflow), academic papers (PubMed integration), API documentation, real-time web data via fetch_webpage, structured search results.
 skill_id: web-search
 category: research
 priority: 10

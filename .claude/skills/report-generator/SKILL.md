@@ -1,10 +1,9 @@
-```markdown
 ---
 name: report-generator
-description: 報告產出技能 - 根據資料生成結構化報告。觸發詞：report, 報告, 產出報告, 撰寫報告, 寫報告, generate report。
-skill_id: report-generator
-category: documentation
-priority: 20
+description: |
+  Generate structured reports from collected data.
+  LOAD THIS SKILL WHEN: User says "寫報告", "產出報告", "撰寫報告", "generate report" | after research/analysis | need structured documentation.
+  CAPABILITIES: Research/Technical/Project reports, Markdown format, auto date stamps, structured sections (abstract, methods, results, discussion).
 ---
 
 # 報告產出技能

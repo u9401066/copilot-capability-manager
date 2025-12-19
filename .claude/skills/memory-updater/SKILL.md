@@ -1,6 +1,9 @@
 ---
 name: memory-updater
-description: Update and maintain Memory Bank files (activeContext, progress, decisionLog). Triggers: MB, memory, 記憶, 進度, 更新記憶, update memory, 記錄進度, 更新上下文.
+description: |
+  Update and maintain Memory Bank files (activeContext, progress, decisionLog).
+  LOAD THIS SKILL WHEN: Task completed | session ending | User says "記錄進度", "更新 memory" | before git commit | context needs saving.
+  FILES: activeContext.md (current focus), progress.md (done/doing/next), decisionLog.md (decisions).
 ---
 
 # Memory Bank 更新技能

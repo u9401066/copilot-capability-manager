@@ -1,6 +1,9 @@
 ---
 name: git-precommit
-description: Orchestrate pre-commit workflow including Memory Bank sync, README/CHANGELOG/ROADMAP updates. Triggers: GIT, gc, push, commit, 提交, 準備 commit, 要提交了, git commit, pre-commit, 推送.
+description: |
+  Pre-commit workflow orchestrator for Git operations.
+  LOAD THIS SKILL WHEN: User wants to "commit", "push", "submit" code | says "準備提交", "要 commit 了", "git push" | before any git operation | preparing code for review.
+  ORCHESTRATES: Memory Bank sync → README update → CHANGELOG update → ROADMAP update → Architecture check → Commit message.
 ---
 
 # Git 提交前工作流（編排器）

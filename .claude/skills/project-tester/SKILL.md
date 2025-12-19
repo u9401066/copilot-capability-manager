@@ -1,10 +1,10 @@
 ```markdown
 ---
 name: project-tester
-description: 專案測試技能 - 執行測試、檢查測試覆蓋率。觸發詞：test, 測試, 執行測試, run tests, 測試專案, 跑測試。
-skill_id: project-tester
-category: quality
-priority: 30
+description: |
+  Execute project tests and analyze coverage.
+  LOAD THIS SKILL WHEN: User says "測試", "run tests", "執行測試", "跑測試" | before commits | checking code quality | CI failures.
+  CAPABILITIES: Unit/Integration/E2E tests, coverage reports, failure analysis, Python pytest, Node.js npm test.
 ---
 
 # 專案測試技能

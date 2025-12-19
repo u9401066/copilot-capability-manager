@@ -1,6 +1,9 @@
 ---
 name: project-init
-description: Initialize new projects using this template. Triggers: init, new, 新專案, 初始化, create project, 建立專案, bootstrap, scaffold project.
+description: |
+  Initialize new projects using this template structure.
+  LOAD THIS SKILL WHEN: User says "新專案", "初始化", "create project", "建立專案", "bootstrap" | starting fresh project | cloning template.
+  CAPABILITIES: Copy directory structure, reset Git, configure project name, setup Memory Bank, interactive configuration.
 ---
 
 # 專案初始化技能

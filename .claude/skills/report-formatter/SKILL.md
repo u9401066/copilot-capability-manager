@@ -1,10 +1,9 @@
-```markdown
 ---
 name: report-formatter
-description: 報告整理技能 - 格式化、美化、優化報告內容。觸發詞：format, 整理, 格式化, 美化報告, 優化報告, polish report。
-skill_id: report-formatter
-category: documentation
-priority: 30
+description: |
+  Format, beautify, and optimize report content.
+  LOAD THIS SKILL WHEN: User says "整理報告", "格式化", "美化報告", "polish report" | after report generation | need professional formatting.
+  CAPABILITIES: Markdown formatting, grammar check, structure optimization, emoji/table/code block styling.
 ---
 
 # 報告整理技能

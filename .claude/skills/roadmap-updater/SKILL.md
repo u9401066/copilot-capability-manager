@@ -1,6 +1,9 @@
 ---
 name: roadmap-updater
-description: Auto-update ROADMAP.md status based on completed features. Triggers: RM, roadmap, 路線, 規劃, 完成功能, milestone, 里程碑.
+description: |
+  Auto-update ROADMAP.md status based on completed features.
+  LOAD THIS SKILL WHEN: User says "更新 roadmap", "完成功能", "里程碑" | features completed | planning new milestones | before releases.
+  CAPABILITIES: Status marking (📋→🚧→✅), auto-detect from commits, suggest additions for unlisted features.
 ---
 
 # ROADMAP 更新技能

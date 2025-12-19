@@ -1,10 +1,10 @@
 ```markdown
 ---
 name: doc-updater
-description: 文件更新技能 - 更新專案文件、同步文檔與程式碼。觸發詞：update docs, 更新文件, 同步文檔, 文件更新, update documentation。
-skill_id: doc-updater
-category: documentation
-priority: 20
+description: |
+  Update project documentation and sync docs with code changes.
+  LOAD THIS SKILL WHEN: Code changes require doc updates | User says "更新文件", "同步文檔", "update docs" | after feature implementation | before releases.
+  CAPABILITIES: Update README, CHANGELOG, API docs, ARCHITECTURE, sync with code changes.
 ---
 
 # 文件更新技能
