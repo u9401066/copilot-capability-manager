@@ -1,0 +1,82 @@
+# /cp.cleanup 工作流程
+# 清理和重構專案
+
+workflow:
+  id: cleanup
+  name: 專案清理
+  description: 清理臨時檔案和重構專案結構
+  command: /cp.cleanup
+  
+  # 觸發詞
+  triggers:
+    - /cp.cleanup
+    - 清理專案
+    - cleanup
+    - 整理專案
+    
+  # 參數
+  parameters:
+    scope:
+      description: 清理範圍
+      required: false
+      default: standard
+      options: [minimal, standard, deep]
+    restructure:
+      description: 是否重構檔案結構
+      required: false
+      default: false
+      
+  # 執行步驟
+  steps:
+    - step: 1
+      skill: temp-cleaner
+      name: 清理暫存
+      description: 清理臨時檔案和快取
+      input:
+        scope: "{{scope}}"
+      output: clean_results
+      
+    - step: 2
+      skill: file-restructurer
+      name: 檔案重構
+      description: 重組檔案結構
+      condition: "{{restructure}}"
+      input:
+        dry_run: true
+      output: restructure_plan
+      confirm: true
+      
+    - step: 3
+      skill: file-restructurer
+      name: 執行重構
+      description: 執行檔案重構
+      condition: "{{restructure}} && {{user_confirmed}}"
+      input:
+        plan: "{{restructure_plan}}"
+      output: restructure_results
+      
+    - step: 4
+      skill: memory-updater
+      name: 更新記憶
+      description: 記錄清理結果
+      input:
+        action: "專案清理"
+        details: "{{clean_results}}"
+        
+  # 輸出
+  output:
+    type: summary
+    format: |
+      🧹 清理完成
+      
+      {{clean_results.summary}}
+      
+      {{#if restructure_results}}
+      🔧 重構結果：
+      {{restructure_results.summary}}
+      {{/if}}
+      
+  # 後續建議
+  followup:
+    - "執行測試確認功能正常"
+    - "提交變更到 Git"

@@ -1,0 +1,80 @@
+# /cp.write_report 工作流程
+# 撰寫報告的完整流程
+
+workflow:
+  id: write_report
+  name: 撰寫報告
+  description: 從搜尋資料到產出格式化報告的完整流程
+  command: /cp.write_report
+  
+  # 觸發詞
+  triggers:
+    - /cp.write_report
+    - 寫報告
+    - 撰寫報告
+    - 產出報告
+    
+  # 參數
+  parameters:
+    topic:
+      description: 報告主題
+      required: true
+      example: "AI 在麻醉領域的應用"
+    format:
+      description: 報告格式
+      required: false
+      default: research
+      options: [research, technical, project]
+    language:
+      description: 報告語言
+      required: false
+      default: zh-TW
+      
+  # 執行步驟
+  steps:
+    - step: 1
+      skill: web-search
+      name: 網路檢索
+      description: 搜尋相關資料
+      input:
+        query: "{{topic}}"
+        sources: [pubmed, web, github]
+      output: search_results
+      
+    - step: 2
+      skill: report-generator
+      name: 產出報告
+      description: 根據搜尋結果生成報告
+      input:
+        data: "{{search_results}}"
+        format: "{{format}}"
+        topic: "{{topic}}"
+      output: draft_report
+      
+    - step: 3
+      skill: report-formatter
+      name: 整理報告
+      description: 格式化和美化報告
+      input:
+        report: "{{draft_report}}"
+        language: "{{language}}"
+      output: final_report
+      
+    - step: 4
+      skill: memory-updater
+      name: 更新記憶
+      description: 記錄報告產出到 Memory Bank
+      input:
+        action: "產出報告"
+        details: "{{topic}}"
+        
+  # 輸出
+  output:
+    type: markdown
+    save_to: "reports/{{topic}}_{{date}}.md"
+    
+  # 後續建議
+  followup:
+    - "是否要將報告翻譯成英文？"
+    - "是否要產生簡報版本？"
+    - "是否要更新到 README？"

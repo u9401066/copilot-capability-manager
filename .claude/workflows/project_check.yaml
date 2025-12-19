@@ -1,0 +1,86 @@
+# /cp.project_check 工作流程
+# 專案狀態檢查的完整流程
+
+workflow:
+  id: project_check
+  name: 專案檢查
+  description: 檢查專案狀態並更新必要文件
+  command: /cp.project_check
+  
+  # 觸發詞
+  triggers:
+    - /cp.project_check
+    - 檢查專案
+    - 專案狀態
+    - project check
+    
+  # 參數
+  parameters:
+    scope:
+      description: 檢查範圍
+      required: false
+      default: full
+      options: [full, quick, docs-only]
+    auto_fix:
+      description: 自動修復問題
+      required: false
+      default: false
+      
+  # 執行步驟
+  steps:
+    - step: 1
+      skill: project-checker
+      name: 專案檢查
+      description: 執行全面檢查
+      input:
+        scope: "{{scope}}"
+      output: check_results
+      
+    - step: 2
+      skill: doc-updater
+      name: 文件更新
+      description: 更新需要修正的文件
+      condition: "{{check_results.docs_need_update}}"
+      input:
+        issues: "{{check_results.doc_issues}}"
+        auto_fix: "{{auto_fix}}"
+      output: doc_updates
+      
+    - step: 3
+      skill: memory-updater
+      name: Memory Bank 同步
+      description: 同步 Memory Bank
+      input:
+        check_results: "{{check_results}}"
+        updates: "{{doc_updates}}"
+      output: memory_status
+      
+    - step: 4
+      skill: project-checker
+      name: 最終驗證
+      description: 驗證所有問題已解決
+      condition: "{{auto_fix}}"
+      input:
+        scope: quick
+      output: final_status
+      
+  # 輸出
+  output:
+    type: report
+    format: |
+      🔍 專案檢查報告
+      
+      {{check_results.summary}}
+      
+      {{#if doc_updates}}
+      📝 已更新的文件：
+      {{doc_updates.files}}
+      {{/if}}
+      
+      📊 整體狀態：{{final_status.grade}}
+      
+  # 後續建議
+  followup:
+    - "是否要執行測試？"
+    - "是否要準備 commit？"
+    - "是否要查看詳細報告？"

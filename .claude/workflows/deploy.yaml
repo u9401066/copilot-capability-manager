@@ -1,0 +1,108 @@
+# /cp.deploy 工作流程
+# 完整的部署流程：測試 → Git → CI
+
+workflow:
+  id: deploy
+  name: 部署
+  description: 完整的測試、提交和部署流程
+  command: /cp.deploy
+  
+  # 觸發詞
+  triggers:
+    - /cp.deploy
+    - 部署
+    - deploy
+    - 發布
+    
+  # 參數
+  parameters:
+    message:
+      description: Commit 訊息
+      required: false
+      default: auto
+    skip_tests:
+      description: 跳過測試
+      required: false
+      default: false
+    branch:
+      description: 目標分支
+      required: false
+      default: main
+      
+  # 執行步驟
+  steps:
+    - step: 1
+      skill: project-tester
+      name: 執行測試
+      description: 確保所有測試通過
+      condition: "!{{skip_tests}}"
+      input:
+        coverage: true
+      output: test_results
+      abort_on_fail: true
+      
+    - step: 2
+      skill: project-checker
+      name: 專案檢查
+      description: 檢查專案狀態
+      input:
+        scope: quick
+      output: check_results
+      
+    - step: 3
+      skill: memory-updater
+      name: Memory Bank 同步
+      description: 確保 Memory Bank 更新
+      input:
+        force: true
+      output: memory_status
+      
+    - step: 4
+      skill: git-precommit
+      name: 提交前準備
+      description: 執行提交前檢查
+      input:
+        quick: true
+      output: precommit_status
+      
+    - step: 5
+      skill: git-pusher
+      name: Git 推送
+      description: 提交並推送到遠端
+      input:
+        message: "{{message}}"
+        branch: "{{branch}}"
+      output: push_results
+      
+    - step: 6
+      skill: temp-cleaner
+      name: 清理
+      description: 清理臨時檔案
+      input:
+        scope: build
+      output: clean_results
+      
+  # 輸出
+  output:
+    type: summary
+    format: |
+      🚀 部署完成
+      
+      ═══════════════════════════════════════
+      
+      {{#if test_results}}
+      🧪 測試：{{test_results.summary}}
+      {{/if}}
+      
+      📋 檢查：{{check_results.grade}}
+      
+      📝 Commit：{{push_results.commit_hash}}
+      
+      🔗 CI：{{push_results.ci_url}}
+      
+      ═══════════════════════════════════════
+      
+  # 後續建議
+  followup:
+    - "查看 CI 執行狀態"
+    - "建立 Release Tag"
