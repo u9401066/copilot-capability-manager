@@ -1,7 +1,8 @@
 {
   "name": "copilot-capability-manager",
   "displayName": "Copilot Capability Manager",
-  "description": "視覺化管理 AI Skills 並組合成自動化工作流程",
+  "description": "🚧 [開發中] 視覺化管理 AI Skills 並組合成自動化工作流程",
+  "preview": true,
   "version": "0.1.0",
   "publisher": "u9401066",
   "license": "Apache-2.0",

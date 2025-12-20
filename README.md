@@ -3,6 +3,9 @@
 > 🤖 VS Code 擴充套件 - 透過 GUI 管理 AI Skills 並組合成自動化工作流程
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Status](https://img.shields.io/badge/Status-🚧_Under_Construction-yellow.svg)]()
+
+> ⚠️ **注意：此專案正在積極開發中，API 和功能可能會有重大變更。**
 
 🌐 [繁體中文](README.zh-TW.md) | 📖 [架構設計](ARCHITECTURE.md) | 🗺️ [Roadmap](ROADMAP.md)
 
