@@ -1,0 +1,180 @@
+{
+  "name": "copilot-capability-manager",
+  "displayName": "Copilot Capability Manager",
+  "description": "視覺化管理 AI Skills 並組合成自動化工作流程",
+  "version": "0.1.0",
+  "publisher": "u9401066",
+  "license": "Apache-2.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/u9401066/copilot-capability-manager"
+  },
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other",
+    "Machine Learning"
+  ],
+  "keywords": [
+    "copilot",
+    "ai",
+    "skills",
+    "workflow",
+    "automation"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "capability-manager",
+          "title": "Capability Manager",
+          "icon": "$(extensions)"
+        }
+      ]
+    },
+    "views": {
+      "capability-manager": [
+        {
+          "id": "ccm.skillExplorer",
+          "name": "Skills",
+          "type": "tree"
+        },
+        {
+          "id": "ccm.skillManager",
+          "name": "Skill Manager",
+          "type": "webview"
+        },
+        {
+          "id": "ccm.capabilityBuilder",
+          "name": "Capability Builder",
+          "type": "webview"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "ccm.skill.create",
+        "title": "新增 Skill",
+        "icon": "$(add)",
+        "category": "Capability Manager"
+      },
+      {
+        "command": "ccm.skill.edit",
+        "title": "編輯 Skill",
+        "icon": "$(edit)",
+        "category": "Capability Manager"
+      },
+      {
+        "command": "ccm.skill.delete",
+        "title": "刪除 Skill",
+        "icon": "$(trash)",
+        "category": "Capability Manager"
+      },
+      {
+        "command": "ccm.skill.refresh",
+        "title": "重新整理 Skills",
+        "icon": "$(refresh)",
+        "category": "Capability Manager"
+      },
+      {
+        "command": "ccm.skill.openFile",
+        "title": "開啟 SKILL.md",
+        "icon": "$(go-to-file)",
+        "category": "Capability Manager"
+      },
+      {
+        "command": "ccm.capability.create",
+        "title": "新增 Capability",
+        "icon": "$(add)",
+        "category": "Capability Manager"
+      },
+      {
+        "command": "ccm.capability.export",
+        "title": "匯出 Prompt File",
+        "icon": "$(export)",
+        "category": "Capability Manager"
+      }
+    ],
+    "menus": {
+      "view/title": [
+        {
+          "command": "ccm.skill.create",
+          "when": "view == ccm.skillExplorer",
+          "group": "navigation"
+        },
+        {
+          "command": "ccm.skill.refresh",
+          "when": "view == ccm.skillExplorer",
+          "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "ccm.skill.edit",
+          "when": "view == ccm.skillExplorer && viewItem == skill",
+          "group": "inline"
+        },
+        {
+          "command": "ccm.skill.delete",
+          "when": "view == ccm.skillExplorer && viewItem == skill",
+          "group": "inline"
+        },
+        {
+          "command": "ccm.skill.openFile",
+          "when": "view == ccm.skillExplorer && viewItem == skill"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "Copilot Capability Manager",
+      "properties": {
+        "ccm.skillsPath": {
+          "type": "string",
+          "default": ".claude/skills",
+          "description": "Skills 存放路徑"
+        },
+        "ccm.promptsPath": {
+          "type": "string",
+          "default": ".github/prompts",
+          "description": "Prompt Files 存放路徑"
+        },
+        "ccm.autoRefresh": {
+          "type": "boolean",
+          "default": true,
+          "description": "檔案變更時自動重新整理"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js",
+    "package": "vsce package",
+    "build:webview": "cd webview-ui && npm run build"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.1.0",
+    "@types/mocha": "^10.0.6",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "@vscode/test-electron": "^2.3.8",
+    "eslint": "^8.56.0",
+    "glob": "^10.3.10",
+    "mocha": "^10.2.0",
+    "typescript": "^5.3.3"
+  },
+  "dependencies": {
+    "yaml": "^2.3.4"
+  }
+}

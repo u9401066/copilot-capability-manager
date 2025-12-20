@@ -5,6 +5,31 @@
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.0.0/)，
 專案遵循 [語義化版本](https://semver.org/lang/zh-TW/)。
 
+## [0.2.0] - 2025-12-20
+
+### Added
+- **VS Code Extension 實作**
+  - `extension/package.json` - 擴充套件配置
+  - `extension/tsconfig.json` - TypeScript 配置
+  - `extension/src/extension.ts` - 主入口
+  - `extension/src/services/` - 核心服務層
+    - `SkillService.ts` - Skill CRUD 操作
+    - `CapabilityService.ts` - Workflow 管理
+  - `extension/src/providers/` - UI Providers
+    - `SkillTreeProvider.ts` - 側邊欄 Skill 列表
+    - `SkillManagerProvider.ts` - Skill 編輯器 Webview
+    - `CapabilityBuilderProvider.ts` - Workflow 建立器
+  - `extension/src/types/` - TypeScript 型別定義
+    - `skill.ts` - Skill 相關型別
+    - `capability.ts` - Capability 相關型別
+  - `extension/src/commands/index.ts` - 命令註冊
+
+### Features
+- 視覺化 Skill 管理：TreeView 按分類顯示
+- Skill 編輯器：Webview 表單編輯 SKILL.md
+- Workflow 建立器：拖放組合 Skills 產生 Prompt File
+- 自動監視：檔案變更時自動重新整理
+
 ## [0.1.0] - 2025-12-15
 
 ### Added

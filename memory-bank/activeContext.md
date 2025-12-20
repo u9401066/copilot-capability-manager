@@ -4,48 +4,56 @@
 
 ## 🎯 當前焦點
 
-- 完成 Copilot Capability Manager 重構，準備 Git commit
+- 完成 VS Code Extension 實作，準備 Git commit
 
 ## 📝 進行中的變更
 
 | 檔案 | 變更內容 |
 |------|----------|
-| `.github/prompts/*.prompt.md` | 重寫所有 Prompt Files，直接包含完整步驟 |
-| `AGENTS.md` | 簡化為靜態專案上下文 |
-| `README.md` | 更新為 Copilot Capability Manager 說明 |
-| `docs/PROMPT-FILES-MECHANISM.md` | 新增機制說明文檔 |
+| `extension/` | 新增完整 VS Code Extension 實作 |
+| `extension/package.json` | 擴充套件配置：commands, views, menus |
+| `extension/src/services/` | SkillService, CapabilityService |
+| `extension/src/providers/` | TreeView 和 Webview Providers |
+| `extension/src/types/` | TypeScript 型別定義 |
+| `extension/src/commands/` | 命令註冊 |
 
 ## ⚠️ 待解決
 
-- (無)
+- 需要在 extension/ 執行 npm install
+- 需要測試 TypeScript 編譯
 
 ## 💡 重要決定
 
-- **不使用 `agent:` 欄位**：保持 Agent Mode 的完整工具權限
-- **Prompt Files 直接包含步驟**：不需要動態更新 AGENTS.md
-- **Skills 保留在 `.claude/skills/`**：這是讓技能生效的必要位置
+- **Extension 獨立目錄**：extension/ 有自己的 package.json 和 tsconfig
+- **採用 TreeView + Webview**：Skill 列表用 TreeView，編輯器用 Webview
+- **分類管理**：Skills 按 category 分組顯示
 
 ## 📁 相關檔案
 
 ```
-.github/prompts/
-  cp.write_report.prompt.md
-  cp.project_check.prompt.md
-  cp.deploy.prompt.md
-  cp.cleanup.prompt.md
-  cp.commit.prompt.md
-  cp.new_skill.prompt.md
-  cp.new_workflow.prompt.md
-  cp.help.prompt.md
-AGENTS.md
-README.md
-docs/PROMPT-FILES-MECHANISM.md
+extension/
+├── package.json
+├── tsconfig.json
+└── src/
+    ├── extension.ts
+    ├── commands/index.ts
+    ├── providers/
+    │   ├── SkillTreeProvider.ts
+    │   ├── SkillManagerProvider.ts
+    │   └── CapabilityBuilderProvider.ts
+    ├── services/
+    │   ├── SkillService.ts
+    │   └── CapabilityService.ts
+    └── types/
+        ├── skill.ts
+        └── capability.ts
 ```
 
 ## 🔜 下一步
 
-1. Git commit 並 push
-2. 測試 /cp.xxx 指令
+1. Git commit VS Code Extension
+2. npm install && npm run compile
+3. 測試 Extension
 
 ---
 *Last updated: 2025-12-20*

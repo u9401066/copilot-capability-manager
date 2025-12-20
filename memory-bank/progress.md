@@ -6,16 +6,19 @@
 - 分析 Skill 觸發機制問題並建立改進報告
 - 更新 copilot-instructions.md 添加 Skill 自動觸發指引表
 - ✅ **完成全部 22 個 Skills 的 description 強化**
-  - 套用三段式格式：摘要 + LOAD THIS SKILL WHEN + CAPABILITIES
-  - 包含中英文觸發詞和具體情境條件
-  - 提升 Agent 自動觸發的準確性
+- ✅ **實作 VS Code Extension 完整框架**
+  - extension/ 目錄：package.json, tsconfig.json
+  - services/：SkillService, CapabilityService
+  - providers/：SkillTreeProvider, SkillManagerProvider, CapabilityBuilderProvider
+  - types/：skill.ts, capability.ts
+  - commands/：index.ts 註冊所有命令
 
 ## Doing
 
-- 測試改進後的 Skill 觸發效果
+- Git commit VS Code Extension 實作
 
 ## Next
 
-- 遷移到 .github/skills/ 官方格式（需 VS Code Insiders）
-- 建立 Skill 測試案例
-- 評估是否需要調整 Progressive Disclosure 層級
+- 在 extension/ 目錄執行 npm install
+- 測試 Extension 編譯與執行
+- 發布到 VS Code Marketplace
