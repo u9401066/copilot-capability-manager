@@ -8,7 +8,7 @@ Copilot Capability Manager 擴充套件詳細設計。
 
 1. **視覺化管理 Skills**：透過表單新增、編輯、刪除 Skills
 2. **整合 MCP Tools**：在 Skills 中選擇和設定 MCP Tools
-3. **組合 Capabilities**：拖拉 Skills 形成自動化工作流程
+3. **組合 Capabilities**：拖拉 Skills 形成動態能力流程（支援迴圈/分支）
 4. **生成 Prompt Files**：自動匯出 `.prompt.md` 供 Copilot Chat 使用
 
 ---
@@ -286,16 +286,18 @@ ${skill.prompt}`;
 
 1. **Skills 側邊欄**
    - 顯示所有可用 Skills
-   - 可拖動到工作流程
+   - 可拖動到能力流程
 
-2. **工作流程畫布**
+2. **能力畫布**
    - 拖拉排序 Skills
    - 視覺化流程連線
+   - 支援分支和迴圈
    - 點選步驟查看/編輯
 
 3. **步驟設定面板**
    - 覆寫 Skill 預設參數
-   - 條件設定（可選）
+   - 條件設定
+   - 迴圈設定
 
 4. **匯出功能**
    - 預覽生成的 Prompt

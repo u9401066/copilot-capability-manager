@@ -1,4 +1,4 @@
-# Progress (Updated: 2025-12-20)
+# Progress (Updated: 2025-12-21)
 
 ## Done
 
@@ -12,10 +12,21 @@
   - providers/：SkillTreeProvider, SkillManagerProvider, CapabilityBuilderProvider
   - types/：skill.ts, capability.ts
   - commands/：index.ts 註冊所有命令
+- ✅ **統一術語：Workflow → Capability**
+  - 建立 Tool → Skill → Capability 概念層級
+  - 建立 Checkpoint 機制支援長任務狀態追蹤
+  - 分析 Enforcement 機制限制
+- ✅ **專案文件一致性整理**
+  - 更新 CLAUDE.md：反映正確專案描述
+  - 更新 docs/CAPABILITY-GUIDE.md：Tool→Skill→Capability 概念
+  - 更新 docs/PROMPT-FILES-MECHANISM.md：統一術語
+  - 更新 docs/EXTENSION-DESIGN.md：Capability Builder 功能
+  - 更新 ROADMAP.md：Phase 3 描述
+  - 更新 AGENTS.md：移除舊 workflow 參考
 
 ## Doing
 
-- Git commit VS Code Extension 實作
+- Git commit 文件一致性更新
 
 ## Next
 

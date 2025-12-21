@@ -109,15 +109,15 @@ Skills 是可重用的原子能力，位於 `.claude/skills/`。
 
 1. 建立目錄：`.claude/skills/{skill-id}/`
 2. 建立 `SKILL.md` 定義技能
-3. 在 Workflow 中引用
+3. 在 Capability 中引用
 
-### 新增 Workflow
+### 新增 Capability
 
 1. 建立 `.github/prompts/cp.{id}.prompt.md`
 2. 定義執行步驟，引用 Skills
 3. 更新 `cp.help.prompt.md`
 
-詳見：`/cp.new_skill` 和 `/cp.new_workflow`
+詳見：`/cp.new_skill` 和 `/cp.new_capability`
 
 ---
 
