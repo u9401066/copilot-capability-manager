@@ -1,4 +1,4 @@
-# Progress (Updated: 2025-12-21)
+# Progress (Updated: 2025-12-22)
 
 ## Done
 
@@ -17,19 +17,17 @@
   - 建立 Checkpoint 機制支援長任務狀態追蹤
   - 分析 Enforcement 機制限制
 - ✅ **專案文件一致性整理**
-  - 更新 CLAUDE.md：反映正確專案描述
-  - 更新 docs/CAPABILITY-GUIDE.md：Tool→Skill→Capability 概念
-  - 更新 docs/PROMPT-FILES-MECHANISM.md：統一術語
-  - 更新 docs/EXTENSION-DESIGN.md：Capability Builder 功能
-  - 更新 ROADMAP.md：Phase 3 描述
-  - 更新 AGENTS.md：移除舊 workflow 參考
+- ✅ **建立 Skill 層級架構**
+  - 原子技能 (Atomic): literature-search, literature-filter, pdf-reader, note-writer, content-validator
+  - 組合技能 (Composite): literature-retrieval, report-writing
+- ✅ **更新 cp.write_report 為組合能力架構**
 
 ## Doing
 
-- Git commit 文件一致性更新
+- Git commit 新 Skills 架構
 
 ## Next
 
+- 測試新的 cp.write_report 能力流程
 - 在 extension/ 目錄執行 npm install
 - 測試 Extension 編譯與執行
-- 發布到 VS Code Marketplace
