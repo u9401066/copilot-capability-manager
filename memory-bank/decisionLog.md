@@ -9,6 +9,103 @@
 | 2025-12-20 | 重構為 Copilot Capability Manager | 專注於 /cp.xxx 斜線指令系統 |
 | 2025-12-20 | 不使用 agent: 欄位 | 保持 Agent Mode 完整工具權限 |
 | 2025-12-20 | Prompt Files 直接包含完整步驟 | 簡化架構，不需動態更新 AGENTS.md |
+| 2025-12-21 | **Skill vs Capability 概念區分** | Skill=原子多工具操作, Capability=動態狀態機 |
+| 2025-12-21 | **長任務狀態追蹤機制** | 使用 Checkpoint 檔案實現跨對話狀態持久化 |
+
+---
+
+## [2025-12-21] Skill vs Capability 核心概念區分
+
+### 背景
+原本將 Capability 設計為線性的 Skill 串聯（類似 Workflow），但實際使用場景更複雜。
+
+### 問題場景：文獻評讀
+- 輸入：一個資料夾（包含多個 PDF）
+- 需要：
+  - `search` skill × N（找多篇文獻）
+  - 對每個 PDF：
+    - `read-pdf` skill × M（長 PDF 可能要讀多次）
+    - `write-note` skill × M（每次讀完寫筆記）
+  - 最後 `synthesis` skill（綜合整理）
+
+### 決定
+重新定義概念層級：
+
+```
+┌─────────────────────────────────────────────────────┐
+│  Tool (工具)                                        │
+│  - 最小單位，單一 API 調用                           │
+│  - 例：fetch_webpage, read_file, run_in_terminal   │
+├─────────────────────────────────────────────────────┤
+│  Skill (技能)                                       │
+│  - 多個 Tools 的編排                                │
+│  - 完成一個明確的小任務                              │
+│  - 例：search-literature (搜尋+篩選+摘要)           │
+├─────────────────────────────────────────────────────┤
+│  Capability (能力)                                  │
+│  - 動態的 Skill 狀態機                              │
+│  - 可迴圈、條件分支、根據狀況決定下一步              │
+│  - 需要狀態追蹤（長任務可能跨對話）                   │
+│  - 例：literature-review (多輪搜尋+多篇閱讀+綜合)   │
+└─────────────────────────────────────────────────────┘
+```
+
+### 理由
+- Workflow 暗示線性執行，不適合描述動態流程
+- Capability 強調「能力」，包含判斷和迴圈
+- 符合實際使用場景（批次處理、長任務）
+
+---
+
+## [2025-12-21] 長任務狀態追蹤機制
+
+### 背景
+Copilot 有 context window 限制，長任務（如處理 20 篇 PDF）無法在單次對話完成。
+
+### 挑戰
+1. Context 會被截斷，Agent 忘記之前做了什麼
+2. 需要知道「處理到哪裡了」
+3. 中途中斷後要能繼續
+
+### 決定
+引入 **Checkpoint 機制**：
+
+```
+memory-bank/
+├── checkpoints/
+│   └── {capability-id}-{timestamp}.json
+│       {
+│         "capability": "literature-review",
+│         "status": "in-progress",
+│         "currentPhase": "reading",
+│         "progress": {
+│           "total": 20,
+│           "completed": 8,
+│           "current": "paper-09.pdf"
+│         },
+│         "completedItems": ["paper-01.pdf", ...],
+│         "notes": [...],
+│         "lastUpdated": "2025-12-21T10:30:00Z"
+│       }
+```
+
+### 執行流程
+1. **啟動**：建立 checkpoint 檔案
+2. **執行中**：每完成一個 item 更新 checkpoint
+3. **中斷**：checkpoint 保留狀態
+4. **繼續**：讀取 checkpoint，從斷點繼續
+5. **完成**：標記 checkpoint 為 completed
+
+### Copilot 支援度
+- ✅ 可透過 Memory Bank 實現（檔案系統）
+- ✅ Agent 可讀寫 checkpoint 檔案
+- ⚠️ 需要明確指示「繼續上次任務」
+- ⚠️ 跨對話需用戶主動觸發
+
+### 影響
+- 新增 `memory-bank/checkpoints/` 目錄
+- Capability 模板需包含 checkpoint 邏輯
+- 需要 `checkpoint-manager` skill
 
 ---
 
