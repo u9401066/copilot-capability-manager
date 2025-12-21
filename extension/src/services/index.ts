@@ -1,2 +1,4 @@
 export { SkillService } from './SkillService';
 export { CapabilityService } from './CapabilityService';
+export { ValidationService } from './ValidationService';
+export { McpService, McpTool, McpParameter, McpServer } from './McpService';

@@ -5,6 +5,41 @@
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.0.0/)，
 專案遵循 [語義化版本](https://semver.org/lang/zh-TW/)。
 
+## [0.3.0] - 2025-12-22
+
+### Added
+- **非線性流程支援**
+  - 新增 `StepType`: skill, branch, loop, parallel, merge
+  - 新增 `LoopConfig`: 固定次數、條件迴圈、遍歷
+  - 新增 `CapabilityEdge`: 節點連接圖結構
+  - CapabilityBuilderProvider 更新：步驟類型選擇 UI
+
+- **MCP Tools 整合**
+  - 新增 `McpService`: MCP 工具發現與推薦
+  - 支援 PubMed, Zotero, Pylance 等工具
+  - SkillManagerProvider 新增「顯示推薦的 MCP Tools」
+
+- **驗證服務**
+  - 新增 `ValidationService`: Capability 合併驗證
+  - 檢查循環依賴、I/O 相容性、資源衝突
+  - 迴圈設定驗證（防止無限迴圈）
+
+- **Capability TreeView**
+  - 新增 `CapabilityTreeProvider`: 側邊欄 Capability 列表
+  - 顯示步驟數量、點擊編輯、展開檢視步驟
+
+- **Skill 複製功能**
+  - 新增 `ccm.skill.duplicate` 命令
+  - 右鍵選單快速複製現有 Skill
+
+### Changed
+- 更新 `types/skill.ts`: 新增 `inputType`, `outputType`, `resources`
+- 更新 `types/capability.ts`: 新增 `edges`, 重新設計 `CapabilityStep`
+- 更新 `extension.ts`: 註冊 CapabilityTreeProvider 和檔案監視
+- 更新 `commands/index.ts`: 新增 duplicate 和 refresh 命令
+
+---
+
 ## [0.2.0] - 2025-12-20
 
 ### Added

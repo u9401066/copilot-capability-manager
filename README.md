@@ -87,17 +87,19 @@ memory-bank/checkpoints/
 
 ### 🧩 Skill Manager（技能管理器）
 
-- 📋 **Skill 列表** - 瀏覽所有可用技能
-- ➕ **新增 Skill** - GUI 表單建立新技能
-- ⚙️ **MCP Tool 整合** - 選擇並設定 MCP 工具
-- 📝 **Prompt 編輯器** - 編輯技能的執行指令
-- 🏷️ **標籤分類** - 研究、文件、Git、維護等
+- 📋 **Skill 列表** - TreeView 瀏覽所有可用技能
+- ➕ **新增/複製 Skill** - GUI 表單建立新技能，支援複製
+- 🔧 **MCP Tool 推薦** - 根據 Skill 內容推薦相關 MCP 工具
+- 📝 **Prompt 編輯器** - Webview 編輯技能執行指令
+- 🏷️ **標籤分類** - 研究、文件、Git、維護、架構、品質
 
 ### 🔗 Capability Builder（能力組合器）
 
-- 🎨 **拖拉介面** - 拖動 Skills 排列順序
-- 🔄 **重複使用** - 同一 Skill 可多次使用
-- 📊 **流程預覽** - 視覺化工作流程
+- 🎨 **步驟編輯器** - 拖動 Skills 排列順序
+- 🔄 **迴圈執行** - 支援固定次數、條件迴圈、遍歷
+- 🔀 **分支處理** - 條件判斷與步驟跳轉
+- ⚡ **並行執行** - 同時執行多個獨立 Steps
+- ✅ **驗證服務** - 檢查步驟 I/O 相容性、迴圈設定
 - 💾 **匯出 Prompt** - 自動生成 `.prompt.md` 檔案
 
 ### ⚡ 執行引擎
@@ -137,14 +139,18 @@ copilot-capability-manager/
 - [x] Skill 模組架構
 - [x] `/cp.xxx` 斜線指令
 
-### Phase 2: VS Code Extension 🚧
-- [ ] 擴充套件基礎架構
-- [ ] Skill Manager GUI
-- [ ] Capability Builder GUI
+### Phase 2: VS Code Extension ✅
+- [x] 擴充套件基礎架構
+- [x] Skill Manager GUI
+- [x] Capability Builder GUI
+- [x] Skill TreeView + Editor Webview
+- [x] Capability TreeView + Builder Webview
+- [x] MCP Tools 推薦功能
+- [x] 非線性流程支援（分支/迴圈/並行）
 
-### Phase 3: MCP 整合
-- [ ] MCP Tool 選擇器
-- [ ] Tool 參數設定
+### Phase 3: MCP 整合 🚧
+- [x] MCP Tool 推薦器
+- [ ] Tool 參數設定 UI
 - [ ] 動態工具載入
 
 ### Phase 4: 進階功能

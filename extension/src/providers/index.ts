@@ -5,3 +5,4 @@
 export { SkillTreeProvider } from './SkillTreeProvider';
 export { SkillManagerProvider } from './SkillManagerProvider';
 export { CapabilityBuilderProvider } from './CapabilityBuilderProvider';
+export { CapabilityTreeProvider } from './CapabilityTreeProvider';

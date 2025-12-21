@@ -1,11 +1,14 @@
 /**
- * CapabilityBuilderProvider - Workflow 建立器 Webview
+ * CapabilityBuilderProvider - Workflow 建立器 Webview (Enhanced)
+ * 支援非線性流程：分支、迴圈、並行執行
  */
 
 import * as vscode from 'vscode';
 import { CapabilityService } from '../services/CapabilityService';
 import { SkillService } from '../services/SkillService';
-import { Capability, CapabilityStep, Skill } from '../types';
+import { ValidationService } from '../services/ValidationService';
+import { Capability, CapabilityStep, StepType, LoopConfig } from '../types/capability';
+import { Skill } from '../types/skill';
 
 export class CapabilityBuilderProvider implements vscode.WebviewViewProvider {
     public static readonly viewType = 'ccm.capabilityBuilder';
@@ -13,12 +16,15 @@ export class CapabilityBuilderProvider implements vscode.WebviewViewProvider {
     private _view?: vscode.WebviewView;
     private currentCapability?: Capability;
     private availableSkills: Skill[] = [];
+    private validationService: ValidationService;
 
     constructor(
         private readonly extensionUri: vscode.Uri,
         private readonly capabilityService: CapabilityService,
         private readonly skillService: SkillService
-    ) {}
+    ) {
+        this.validationService = new ValidationService(skillService);
+    }
 
     async resolveWebviewView(
         webviewView: vscode.WebviewView,
@@ -54,6 +60,12 @@ export class CapabilityBuilderProvider implements vscode.WebviewViewProvider {
                     break;
                 case 'requestSkills':
                     this.sendSkillsToWebview();
+                    break;
+                case 'validateStep':
+                    await this.validateStep(message.fromStep, message.toStep);
+                    break;
+                case 'validateLoop':
+                    this.validateLoopConfig(message.step);
                     break;
             }
         });
@@ -108,8 +120,41 @@ export class CapabilityBuilderProvider implements vscode.WebviewViewProvider {
                 skills: this.availableSkills.map(s => ({
                     id: s.id,
                     name: s.name || s.id,
-                    description: s.description.split('\n')[0]
+                    description: s.description.split('\n')[0],
+                    inputType: s.inputType,
+                    outputType: s.outputType
                 }))
+            });
+        }
+    }
+
+    /**
+     * 驗證兩個步驟之間的連接
+     */
+    private async validateStep(fromStep: CapabilityStep, toStep: CapabilityStep): Promise<void> {
+        const result = await this.validationService.validateStepConnection(fromStep, toStep);
+        if (this._view) {
+            this._view.webview.postMessage({
+                command: 'stepValidationResult',
+                valid: result.valid,
+                reason: result.reason,
+                fromStepId: fromStep.skillId,
+                toStepId: toStep.skillId
+            });
+        }
+    }
+
+    /**
+     * 驗證迴圈設定
+     */
+    private validateLoopConfig(step: CapabilityStep): void {
+        const result = this.validationService.validateLoop(step);
+        if (this._view) {
+            this._view.webview.postMessage({
+                command: 'loopValidationResult',
+                valid: result.valid,
+                warnings: result.warnings,
+                stepId: step.skillId
             });
         }
     }
@@ -267,6 +312,50 @@ export class CapabilityBuilderProvider implements vscode.WebviewViewProvider {
             margin-bottom: 8px;
         }
         
+        .step-type-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            margin-left: 8px;
+        }
+        
+        .step-type-skill { background: var(--vscode-badge-background); color: var(--vscode-badge-foreground); }
+        .step-type-branch { background: #0e639c; color: white; }
+        .step-type-loop { background: #6f42c1; color: white; }
+        .step-type-parallel { background: #28a745; color: white; }
+        
+        .loop-config {
+            background: var(--vscode-editor-inactiveSelectionBackground);
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 8px;
+        }
+        
+        .loop-config label {
+            font-weight: normal;
+            font-size: 12px;
+        }
+        
+        .branch-config {
+            background: var(--vscode-editor-inactiveSelectionBackground);
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 8px;
+        }
+        
+        .validation-error {
+            color: var(--vscode-errorForeground);
+            font-size: 11px;
+            margin-top: 4px;
+        }
+        
+        .validation-warning {
+            color: var(--vscode-editorWarning-foreground);
+            font-size: 11px;
+            margin-top: 4px;
+        }
+        
         #steps-container { margin-top: 10px; }
         
         .add-step-btn {
@@ -334,8 +423,38 @@ export class CapabilityBuilderProvider implements vscode.WebviewViewProvider {
                 case 'skillsList':
                     availableSkills = message.skills;
                     break;
+                case 'stepValidationResult':
+                    showStepValidation(message);
+                    break;
+                case 'loopValidationResult':
+                    showLoopValidation(message);
+                    break;
             }
         });
+        
+        function showStepValidation(result) {
+            // 顯示步驟連接驗證結果
+            if (!result.valid) {
+                console.log('Step validation failed:', result.reason);
+            }
+        }
+        
+        function showLoopValidation(result) {
+            // 顯示迴圈驗證結果
+            const stepIndex = steps.findIndex(s => s.skillId === result.stepId);
+            if (stepIndex >= 0) {
+                const container = document.getElementById('validation-' + stepIndex);
+                if (container) {
+                    if (!result.valid) {
+                        container.innerHTML = '<div class="validation-error">⚠️ ' + result.warnings.join(', ') + '</div>';
+                    } else if (result.warnings && result.warnings.length > 0) {
+                        container.innerHTML = '<div class="validation-warning">💡 ' + result.warnings.join(', ') + '</div>';
+                    } else {
+                        container.innerHTML = '';
+                    }
+                }
+            }
+        }
         
         function loadCapabilityData(capability, skills) {
             isNewCapability = false;
@@ -384,10 +503,16 @@ export class CapabilityBuilderProvider implements vscode.WebviewViewProvider {
         
         function renderSteps() {
             const container = document.getElementById('steps-container');
-            container.innerHTML = steps.map((step, index) => \`
-                <div class="step-item">
+            container.innerHTML = steps.map((step, index) => {
+                const stepType = step.type || 'skill';
+                const typeBadge = getTypeBadge(stepType);
+                const loopConfig = stepType === 'loop' ? renderLoopConfig(step, index) : '';
+                const branchConfig = stepType === 'branch' ? renderBranchConfig(step, index) : '';
+                
+                return \`
+                <div class="step-item" data-index="\${index}">
                     <div class="step-header">
-                        <span class="step-number">步驟 \${index + 1}</span>
+                        <span class="step-number">步驟 \${index + 1} \${typeBadge}</span>
                         <div class="step-actions">
                             <button class="btn-small btn-secondary" onclick="moveStep(\${index}, -1)" \${index === 0 ? 'disabled' : ''}>↑</button>
                             <button class="btn-small btn-secondary" onclick="moveStep(\${index}, 1)" \${index === steps.length - 1 ? 'disabled' : ''}>↓</button>
@@ -395,19 +520,104 @@ export class CapabilityBuilderProvider implements vscode.WebviewViewProvider {
                         </div>
                     </div>
                     <div class="step-content">
+                        <select onchange="updateStep(\${index}, 'type', this.value); renderSteps();">
+                            <option value="skill" \${stepType === 'skill' ? 'selected' : ''}>🎯 一般 Skill</option>
+                            <option value="loop" \${stepType === 'loop' ? 'selected' : ''}>🔄 迴圈</option>
+                            <option value="branch" \${stepType === 'branch' ? 'selected' : ''}>🔀 分支</option>
+                            <option value="parallel" \${stepType === 'parallel' ? 'selected' : ''}>⚡ 並行</option>
+                        </select>
                         <input type="text" value="\${step.name || ''}" placeholder="步驟名稱" onchange="updateStep(\${index}, 'name', this.value)">
                         <select onchange="updateStep(\${index}, 'skillId', this.value)">
                             <option value="">-- 選擇 Skill --</option>
                             \${availableSkills.map(s => \`<option value="\${s.id}" \${step.skillId === s.id ? 'selected' : ''}>\${s.name}</option>\`).join('')}
                         </select>
                         <input type="text" value="\${step.description || ''}" placeholder="步驟說明（選填）" onchange="updateStep(\${index}, 'description', this.value)">
+                        \${loopConfig}
+                        \${branchConfig}
+                        <div id="validation-\${index}"></div>
                     </div>
                 </div>
-            \`).join('');
+            \`}).join('');
+        }
+        
+        function getTypeBadge(type) {
+            const badges = {
+                'skill': '<span class="step-type-badge step-type-skill">Skill</span>',
+                'loop': '<span class="step-type-badge step-type-loop">迴圈</span>',
+                'branch': '<span class="step-type-badge step-type-branch">分支</span>',
+                'parallel': '<span class="step-type-badge step-type-parallel">並行</span>'
+            };
+            return badges[type] || '';
+        }
+        
+        function renderLoopConfig(step, index) {
+            const loop = step.loop || { type: 'count', count: 1, maxIterations: 10 };
+            return \`
+                <div class="loop-config">
+                    <label>迴圈類型</label>
+                    <select onchange="updateLoopConfig(\${index}, 'type', this.value)">
+                        <option value="count" \${loop.type === 'count' ? 'selected' : ''}>固定次數</option>
+                        <option value="while" \${loop.type === 'while' ? 'selected' : ''}>條件迴圈</option>
+                        <option value="foreach" \${loop.type === 'foreach' ? 'selected' : ''}>遍歷項目</option>
+                    </select>
+                    \${loop.type === 'count' ? \`
+                        <label>迴圈次數</label>
+                        <input type="number" value="\${loop.count || 1}" min="1" max="100" 
+                               onchange="updateLoopConfig(\${index}, 'count', parseInt(this.value))">
+                    \` : ''}
+                    \${loop.type === 'while' ? \`
+                        <label>條件表達式</label>
+                        <input type="text" value="\${loop.condition || ''}" placeholder="例如: items.length > 0"
+                               onchange="updateLoopConfig(\${index}, 'condition', this.value)">
+                    \` : ''}
+                    <label>最大迭代次數（防止無限迴圈）</label>
+                    <input type="number" value="\${loop.maxIterations || 10}" min="1" max="100"
+                           onchange="updateLoopConfig(\${index}, 'maxIterations', parseInt(this.value))">
+                </div>
+            \`;
+        }
+        
+        function renderBranchConfig(step, index) {
+            const branch = step.branches || [{ condition: '', targetStep: '' }];
+            return \`
+                <div class="branch-config">
+                    <label>分支條件</label>
+                    <input type="text" value="\${branch[0]?.condition || ''}" placeholder="例如: result.success === true"
+                           onchange="updateBranchConfig(\${index}, 0, 'condition', this.value)">
+                    <label>成功時跳到步驟</label>
+                    <select onchange="updateBranchConfig(\${index}, 0, 'targetStep', this.value)">
+                        <option value="">-- 選擇步驟 --</option>
+                        \${steps.map((s, i) => i !== index ? \`<option value="\${i}" \${branch[0]?.targetStep == i ? 'selected' : ''}>步驟 \${i + 1}: \${s.name || s.skillId}</option>\` : '').join('')}
+                    </select>
+                </div>
+            \`;
+        }
+        
+        function updateLoopConfig(index, field, value) {
+            if (!steps[index].loop) {
+                steps[index].loop = { type: 'count', count: 1, maxIterations: 10 };
+            }
+            steps[index].loop[field] = value;
+            
+            // 驗證迴圈設定
+            vscode.postMessage({ command: 'validateLoop', step: steps[index] });
+        }
+        
+        function updateBranchConfig(index, branchIndex, field, value) {
+            if (!steps[index].branches) {
+                steps[index].branches = [{ condition: '', targetStep: '' }];
+            }
+            steps[index].branches[branchIndex][field] = value;
         }
         
         function addStep() {
-            steps.push({ name: '', skillId: '', description: '' });
+            steps.push({ 
+                name: '', 
+                skillId: '', 
+                description: '',
+                type: 'skill',
+                order: steps.length
+            });
             renderSteps();
         }
         

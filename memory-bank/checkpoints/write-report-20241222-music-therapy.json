@@ -1,0 +1,26 @@
+{
+  "capability": "write-report",
+  "status": "completed",
+  "mode": "C",
+  "topic": "音樂治療對於恢復室的止痛效果",
+  "topic_en": "Music therapy for pain relief in PACU/recovery room",
+  "startTime": "2024-12-22T00:00:00Z",
+  "endTime": "2024-12-22T00:30:00Z",
+  "progress": {
+    "retrieval": "completed",
+    "sources_total": 10,
+    "sources_processed": 10
+  },
+  "currentStep": "completed",
+  "currentSkill": "completed",
+  "output": "reports/music-therapy-pacu-pain-report-2024-12.md",
+  "data": {
+    "search_results": ["26277246", "29665028", "37646752", "31785131", "33495383", "31356272", "37269276", "40779914", "35623995", "32871021"],
+    "filtered_results": ["26277246", "29665028", "37646752", "31785131", "33495383", "31356272", "37269276", "40779914", "35623995", "32871021"],
+    "key_findings": {
+      "pain_reduction": "SMD -0.50, VAS 10mm decrease",
+      "anxiety_reduction": "SMD -0.69, STAI 6.3 points decrease",
+      "opioid_reduction": "SMD -0.31"
+    }
+  }
+}

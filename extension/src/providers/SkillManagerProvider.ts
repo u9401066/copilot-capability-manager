@@ -4,6 +4,7 @@
 
 import * as vscode from 'vscode';
 import { SkillService } from '../services/SkillService';
+import { McpService, McpTool } from '../services/McpService';
 import { Skill, SkillCategory, CATEGORY_LABELS } from '../types';
 
 export class SkillManagerProvider implements vscode.WebviewViewProvider {
@@ -11,11 +12,14 @@ export class SkillManagerProvider implements vscode.WebviewViewProvider {
     
     private _view?: vscode.WebviewView;
     private currentSkill?: Skill;
+    private mcpService: McpService;
 
     constructor(
         private readonly extensionUri: vscode.Uri,
         private readonly skillService: SkillService
-    ) {}
+    ) {
+        this.mcpService = new McpService();
+    }
 
     resolveWebviewView(
         webviewView: vscode.WebviewView,
@@ -45,6 +49,18 @@ export class SkillManagerProvider implements vscode.WebviewViewProvider {
                     break;
                 case 'requestSkill':
                     this.sendSkillToWebview();
+                    break;
+                case 'requestNewForm':
+                    // 處理來自 Webview 按鈕的新增請求
+                    this.showNewSkillForm();
+                    break;
+                case 'requestMcpTools':
+                    // 取得 MCP Tools 建議
+                    this.sendMcpToolsToWebview(message.name, message.description);
+                    break;
+                case 'insertToolUsage':
+                    // 插入 Tool 使用範例到 prompt
+                    this.insertToolUsage(message.toolName);
                     break;
             }
         });
@@ -80,6 +96,37 @@ export class SkillManagerProvider implements vscode.WebviewViewProvider {
                 command: 'loadSkill',
                 skill: this.currentSkill,
                 categories: Object.entries(CATEGORY_LABELS).map(([value, label]) => ({ value, label }))
+            });
+        }
+    }
+
+    /**
+     * 發送 MCP Tools 推薦到 Webview
+     */
+    private sendMcpToolsToWebview(name: string, description: string): void {
+        const recommendedTools = this.mcpService.recommendToolsForSkill(name || '', description || '');
+        const allTools = this.mcpService.getToolsByCategory();
+        
+        if (this._view) {
+            this._view.webview.postMessage({
+                command: 'showMcpTools',
+                recommendedTools,
+                allToolsByCategory: Object.fromEntries(allTools)
+            });
+        }
+    }
+
+    /**
+     * 插入 Tool 使用範例到 prompt
+     */
+    private insertToolUsage(toolName: string): void {
+        const tool = this.mcpService.getTool(toolName);
+        if (tool && this._view) {
+            const usage = this.mcpService.generateToolUsageExample(tool);
+            this._view.webview.postMessage({
+                command: 'insertToolUsage',
+                usage,
+                tool
             });
         }
     }
@@ -220,6 +267,50 @@ export class SkillManagerProvider implements vscode.WebviewViewProvider {
             color: var(--vscode-descriptionForeground);
             margin-top: 4px;
         }
+        
+        .mcp-tool-item {
+            display: flex;
+            align-items: center;
+            padding: 6px 8px;
+            margin: 4px 0;
+            background: var(--vscode-editor-background);
+            border: 1px solid var(--vscode-editorWidget-border);
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .mcp-tool-item:hover {
+            background: var(--vscode-list-hoverBackground);
+        }
+        
+        .mcp-tool-name {
+            font-family: var(--vscode-editor-font-family);
+            font-size: 12px;
+            flex: 1;
+        }
+        
+        .mcp-tool-desc {
+            font-size: 11px;
+            color: var(--vscode-descriptionForeground);
+            margin-left: 8px;
+        }
+        
+        .mcp-category {
+            margin-top: 12px;
+            margin-bottom: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            color: var(--vscode-textLink-foreground);
+        }
+        
+        .recommended-badge {
+            background: var(--vscode-badge-background);
+            color: var(--vscode-badge-foreground);
+            padding: 2px 6px;
+            border-radius: 10px;
+            font-size: 10px;
+            margin-left: 8px;
+        }
     </style>
 </head>
 <body>
@@ -260,6 +351,28 @@ export class SkillManagerProvider implements vscode.WebviewViewProvider {
                 <div class="hint">當 Agent 偵測到這些詞彙時會載入此 Skill</div>
             </div>
             
+            <div class="form-group">
+                <label for="skill-prompt">Prompt 內容</label>
+                <textarea id="skill-prompt" style="min-height: 150px;" placeholder="# Skill 標題&#10;&#10;## 執行步驟&#10;&#10;1. 步驟一&#10;2. 步驟二"></textarea>
+                <div class="hint">Skill 的詳細執行指引（Markdown 格式）</div>
+            </div>
+            
+            <div class="form-group">
+                <label>可用 MCP Tools</label>
+                <button class="btn-secondary" type="button" onclick="showMcpTools()" style="width: auto; margin-bottom: 8px;">
+                    🔧 顯示推薦的 MCP Tools
+                </button>
+                <div id="mcp-tools-container" style="display: none;">
+                    <div id="recommended-tools"></div>
+                    <details>
+                        <summary style="cursor: pointer; padding: 8px 0; color: var(--vscode-textLink-foreground);">
+                            顯示所有 Tools
+                        </summary>
+                        <div id="all-tools"></div>
+                    </details>
+                </div>
+            </div>
+            
             <div class="button-group">
                 <button class="btn-primary" onclick="saveSkill()">儲存</button>
                 <button class="btn-secondary" onclick="cancel()">取消</button>
@@ -283,6 +396,12 @@ export class SkillManagerProvider implements vscode.WebviewViewProvider {
                 case 'showNewSkillForm':
                     showNewSkillForm(message.categories);
                     break;
+                case 'showMcpTools':
+                    displayMcpTools(message.recommendedTools, message.allToolsByCategory);
+                    break;
+                case 'insertToolUsage':
+                    insertToolUsageToPrompt(message.usage, message.tool);
+                    break;
             }
         });
         
@@ -300,6 +419,7 @@ export class SkillManagerProvider implements vscode.WebviewViewProvider {
             document.getElementById('skill-name').value = skill.name || '';
             document.getElementById('skill-description').value = skill.description || '';
             document.getElementById('skill-triggers').value = (skill.triggers || []).join('\\n');
+            document.getElementById('skill-prompt').value = skill.prompt || '';
             
             // 填充分類選項
             populateCategories(categories, skill.category);
@@ -319,6 +439,7 @@ export class SkillManagerProvider implements vscode.WebviewViewProvider {
             document.getElementById('skill-name').value = '';
             document.getElementById('skill-description').value = '';
             document.getElementById('skill-triggers').value = '';
+            document.getElementById('skill-prompt').value = '';
             
             populateCategories(categories);
         }
@@ -340,7 +461,8 @@ export class SkillManagerProvider implements vscode.WebviewViewProvider {
                 name: document.getElementById('skill-name').value.trim(),
                 category: document.getElementById('skill-category').value,
                 description: document.getElementById('skill-description').value.trim(),
-                triggers: document.getElementById('skill-triggers').value.split('\\n').filter(t => t.trim())
+                triggers: document.getElementById('skill-triggers').value.split('\\n').filter(t => t.trim()),
+                prompt: document.getElementById('skill-prompt').value.trim() || '# ' + document.getElementById('skill-name').value.trim() + '\\n\\n請在此填寫 Skill 執行指引。'
             };
             
             if (!skill.id || !skill.name || !skill.description) {
@@ -368,6 +490,62 @@ export class SkillManagerProvider implements vscode.WebviewViewProvider {
         
         // 請求當前 Skill 資料（如果有）
         vscode.postMessage({ command: 'requestSkill' });
+        
+        function showMcpTools() {
+            const name = document.getElementById('skill-name').value;
+            const description = document.getElementById('skill-description').value;
+            vscode.postMessage({ 
+                command: 'requestMcpTools', 
+                name, 
+                description 
+            });
+        }
+        
+        function displayMcpTools(recommended, allByCategory) {
+            const container = document.getElementById('mcp-tools-container');
+            container.style.display = 'block';
+            
+            // 顯示推薦的 Tools
+            const recContainer = document.getElementById('recommended-tools');
+            if (recommended && recommended.length > 0) {
+                recContainer.innerHTML = '<div class="mcp-category">✨ 推薦的 Tools</div>' +
+                    recommended.map(t => createToolItem(t, true)).join('');
+            } else {
+                recContainer.innerHTML = '<div style="color: var(--vscode-descriptionForeground); padding: 8px;">沒有特定推薦，請瀏覽所有 Tools</div>';
+            }
+            
+            // 顯示所有 Tools by category
+            const allContainer = document.getElementById('all-tools');
+            let html = '';
+            for (const [category, tools] of Object.entries(allByCategory)) {
+                html += '<div class="mcp-category">' + category + '</div>';
+                html += tools.map(t => createToolItem(t, false)).join('');
+            }
+            allContainer.innerHTML = html;
+        }
+        
+        function createToolItem(tool, isRecommended) {
+            const badge = isRecommended ? '<span class="recommended-badge">推薦</span>' : '';
+            return '<div class="mcp-tool-item" onclick="insertTool(\\'' + tool.name + '\\')">' +
+                '<span class="mcp-tool-name">' + tool.name.replace('mcp_', '').replace(/_/g, '.') + '</span>' +
+                badge +
+                '<span class="mcp-tool-desc">' + (tool.description || '') + '</span>' +
+                '</div>';
+        }
+        
+        function insertTool(toolName) {
+            vscode.postMessage({ command: 'insertToolUsage', toolName });
+        }
+        
+        function insertToolUsageToPrompt(usage, tool) {
+            const promptArea = document.getElementById('skill-prompt');
+            const cursorPos = promptArea.selectionStart;
+            const text = promptArea.value;
+            const toolRef = '使用 ' + tool.name + ' 工具';
+            const newText = text.slice(0, cursorPos) + '\\n\\n' + toolRef + '\\n\\n' + text.slice(cursorPos);
+            promptArea.value = newText;
+            promptArea.focus();
+        }
     </script>
 </body>
 </html>`;

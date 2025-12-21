@@ -11,6 +11,19 @@ export type SkillCategory =
     | 'quality'
     | 'other';
 
+/**
+ * Skill 輸入/輸出類型（用於合併驗證）
+ */
+export type SkillIOType = 
+    | 'text'        // 純文字
+    | 'markdown'    // Markdown 文件
+    | 'json'        // JSON 資料
+    | 'pmids'       // PubMed IDs
+    | 'files'       // 檔案路徑列表
+    | 'pdf'         // PDF 檔案
+    | 'code'        // 程式碼
+    | 'any';        // 任意類型
+
 export interface Skill {
     /** Skill ID（對應目錄名稱）*/
     id: string;
@@ -26,6 +39,12 @@ export interface Skill {
     mcpTools?: McpToolConfig[];
     /** Prompt 內容（SKILL.md 的 Markdown 部分）*/
     prompt: string;
+    /** 輸入類型（用於合併驗證）*/
+    inputType?: SkillIOType;
+    /** 輸出類型（用於合併驗證）*/
+    outputType?: SkillIOType;
+    /** 依賴的資源（用於衝突檢測）*/
+    resources?: string[];
     /** 檔案路徑 */
     filePath?: string;
     /** 建立時間 */

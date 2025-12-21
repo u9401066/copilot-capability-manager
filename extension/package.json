@@ -46,8 +46,13 @@
           "type": "tree"
         },
         {
+          "id": "ccm.capabilityExplorer",
+          "name": "Capabilities",
+          "type": "tree"
+        },
+        {
           "id": "ccm.skillManager",
-          "name": "Skill Manager",
+          "name": "Skill Editor",
           "type": "webview"
         },
         {
@@ -77,6 +82,12 @@
         "category": "Capability Manager"
       },
       {
+        "command": "ccm.skill.duplicate",
+        "title": "複製 Skill",
+        "icon": "$(copy)",
+        "category": "Capability Manager"
+      },
+      {
         "command": "ccm.skill.refresh",
         "title": "重新整理 Skills",
         "icon": "$(refresh)",
@@ -92,6 +103,18 @@
         "command": "ccm.capability.create",
         "title": "新增 Capability",
         "icon": "$(add)",
+        "category": "Capability Manager"
+      },
+      {
+        "command": "ccm.capability.refresh",
+        "title": "重新整理 Capabilities",
+        "icon": "$(refresh)",
+        "category": "Capability Manager"
+      },
+      {
+        "command": "ccm.capability.edit",
+        "title": "編輯 Capability",
+        "icon": "$(edit)",
         "category": "Capability Manager"
       },
       {
@@ -112,6 +135,16 @@
           "command": "ccm.skill.refresh",
           "when": "view == ccm.skillExplorer",
           "group": "navigation"
+        },
+        {
+          "command": "ccm.capability.create",
+          "when": "view == ccm.capabilityExplorer",
+          "group": "navigation"
+        },
+        {
+          "command": "ccm.capability.refresh",
+          "when": "view == ccm.capabilityExplorer",
+          "group": "navigation"
         }
       ],
       "view/item/context": [
@@ -126,8 +159,17 @@
           "group": "inline"
         },
         {
+          "command": "ccm.skill.duplicate",
+          "when": "view == ccm.skillExplorer && viewItem == skill"
+        },
+        {
           "command": "ccm.skill.openFile",
           "when": "view == ccm.skillExplorer && viewItem == skill"
+        },
+        {
+          "command": "ccm.capability.edit",
+          "when": "view == ccm.capabilityExplorer && viewItem == capability",
+          "group": "inline"
         }
       ]
     },

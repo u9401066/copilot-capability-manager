@@ -7,6 +7,7 @@ import * as path from 'path';
 import { SkillService } from '../services/SkillService';
 import { CapabilityService } from '../services/CapabilityService';
 import { SkillTreeProvider } from '../providers/SkillTreeProvider';
+import { CapabilityTreeProvider } from '../providers/CapabilityTreeProvider';
 import { SkillManagerProvider } from '../providers/SkillManagerProvider';
 import { CapabilityBuilderProvider } from '../providers/CapabilityBuilderProvider';
 
@@ -15,6 +16,7 @@ export function registerCommands(
     skillService: SkillService,
     capabilityService: CapabilityService,
     skillTreeProvider: SkillTreeProvider,
+    capabilityTreeProvider: CapabilityTreeProvider,
     skillManagerProvider: SkillManagerProvider,
     capabilityBuilderProvider: CapabilityBuilderProvider
 ): void {
@@ -59,6 +61,55 @@ export function registerCommands(
                 } catch (error) {
                     vscode.window.showErrorMessage(`刪除失敗: ${error}`);
                 }
+            }
+        })
+    );
+
+    // 複製 Skill
+    context.subscriptions.push(
+        vscode.commands.registerCommand('ccm.skill.duplicate', async (skillId: string) => {
+            try {
+                const skill = await skillService.getSkill(skillId);
+                if (!skill) {
+                    throw new Error(`找不到 Skill "${skillId}"`);
+                }
+                
+                // 詢問新的 ID
+                const newId = await vscode.window.showInputBox({
+                    prompt: '輸入新 Skill 的 ID',
+                    value: `${skillId}-copy`,
+                    validateInput: (value) => {
+                        if (!value || !value.trim()) {
+                            return 'ID 不能為空';
+                        }
+                        if (!/^[a-z0-9-]+$/.test(value)) {
+                            return 'ID 只能包含小寫字母、數字和連字號';
+                        }
+                        return null;
+                    }
+                });
+                
+                if (!newId) {
+                    return; // 使用者取消
+                }
+                
+                // 建立複製的 Skill
+                const newSkill = {
+                    ...skill,
+                    id: newId,
+                    name: `${skill.name} (複製)`,
+                    filePath: undefined
+                };
+                
+                await skillService.createSkill(newSkill);
+                vscode.window.showInformationMessage(`已複製為 "${newId}"`);
+                skillTreeProvider.refresh();
+                
+                // 開啟新 Skill 進行編輯
+                await skillManagerProvider.showSkill(newId);
+                vscode.commands.executeCommand('ccm.skillManager.focus');
+            } catch (error) {
+                vscode.window.showErrorMessage(`複製失敗: ${error}`);
             }
         })
     );
@@ -108,8 +159,7 @@ export function registerCommands(
     // 重新整理 Capability 列表
     context.subscriptions.push(
         vscode.commands.registerCommand('ccm.capability.refresh', () => {
-            // 目前 Capability 沒有 TreeView，這個命令保留給未來使用
-            vscode.window.showInformationMessage('Workflow 列表已重新整理');
+            capabilityTreeProvider.refresh();
         })
     );
 

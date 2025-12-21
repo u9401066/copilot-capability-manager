@@ -6,7 +6,7 @@
 
 import * as vscode from 'vscode';
 import { SkillService, CapabilityService } from './services';
-import { SkillTreeProvider, SkillManagerProvider, CapabilityBuilderProvider } from './providers';
+import { SkillTreeProvider, SkillManagerProvider, CapabilityBuilderProvider, CapabilityTreeProvider } from './providers';
 import { registerCommands } from './commands';
 
 export function activate(context: vscode.ExtensionContext): void {
@@ -24,6 +24,7 @@ export function activate(context: vscode.ExtensionContext): void {
 
     // 初始化 Providers
     const skillTreeProvider = new SkillTreeProvider(skillService);
+    const capabilityTreeProvider = new CapabilityTreeProvider(capabilityService);
     const skillManagerProvider = new SkillManagerProvider(context.extensionUri, skillService);
     const capabilityBuilderProvider = new CapabilityBuilderProvider(
         context.extensionUri,
@@ -31,9 +32,13 @@ export function activate(context: vscode.ExtensionContext): void {
         skillService
     );
 
-    // 註冊 TreeView
+    // 註冊 TreeViews
     context.subscriptions.push(
         vscode.window.registerTreeDataProvider('ccm.skillExplorer', skillTreeProvider)
+    );
+    
+    context.subscriptions.push(
+        vscode.window.registerTreeDataProvider('ccm.capabilityExplorer', capabilityTreeProvider)
     );
 
     // 註冊 WebviewViewProviders
@@ -57,6 +62,7 @@ export function activate(context: vscode.ExtensionContext): void {
         skillService,
         capabilityService,
         skillTreeProvider,
+        capabilityTreeProvider,
         skillManagerProvider,
         capabilityBuilderProvider
     );
@@ -65,15 +71,25 @@ export function activate(context: vscode.ExtensionContext): void {
     const config = vscode.workspace.getConfiguration('ccm');
     if (config.get<boolean>('autoRefresh', true)) {
         const skillsPath = config.get<string>('skillsPath', '.claude/skills');
-        const watcher = vscode.workspace.createFileSystemWatcher(
+        const promptsPath = config.get<string>('promptsPath', '.github/prompts');
+        
+        // Skills 監視
+        const skillWatcher = vscode.workspace.createFileSystemWatcher(
             new vscode.RelativePattern(workspaceFolder, `${skillsPath}/**/SKILL.md`)
         );
-
-        watcher.onDidCreate(() => skillTreeProvider.refresh());
-        watcher.onDidDelete(() => skillTreeProvider.refresh());
-        watcher.onDidChange(() => skillTreeProvider.refresh());
-
-        context.subscriptions.push(watcher);
+        skillWatcher.onDidCreate(() => skillTreeProvider.refresh());
+        skillWatcher.onDidDelete(() => skillTreeProvider.refresh());
+        skillWatcher.onDidChange(() => skillTreeProvider.refresh());
+        context.subscriptions.push(skillWatcher);
+        
+        // Capabilities 監視
+        const capWatcher = vscode.workspace.createFileSystemWatcher(
+            new vscode.RelativePattern(workspaceFolder, `${promptsPath}/cp.*.prompt.md`)
+        );
+        capWatcher.onDidCreate(() => capabilityTreeProvider.refresh());
+        capWatcher.onDidDelete(() => capabilityTreeProvider.refresh());
+        capWatcher.onDidChange(() => capabilityTreeProvider.refresh());
+        context.subscriptions.push(capWatcher);
     }
 
     vscode.window.showInformationMessage('Copilot Capability Manager 已啟動');
