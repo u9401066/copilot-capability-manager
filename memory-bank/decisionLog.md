@@ -1,6 +1,24 @@
 # Decision Log
 
-## 2025-01-XX: 引入 Router 節點和 Shared Skills 概念
+## 2025-12-23: 架構升級 - Runtime MCP 動態組裝
+
+**決策**: 從「靜態編譯」升級為「Runtime MCP 動態組裝」架構
+
+**背景**: 靜態編譯的 .prompt.md 檔案無法保證 Agent 一定會讀取，Router 邏輯只是「建議」。
+
+**解決方案**: 新增 `capability-router` MCP Server
+1. **強制入口**: AGENTS.md 規定必須呼叫 MCP
+2. **動態組裝**: MCP Server 負責 Intent → Router → Compiler → 產生 prompt 檔案
+3. **三重保險**: AGENTS.md 規則 + MCP 回傳指令 + Prompt 自帶指令
+
+**影響**:
+- 新增 `capability-router` MCP Server
+- MCP tools: `activate()`, `list_capabilities()`, `get_capability_status()`
+- 產生的 prompt 放在 `.claude/prompts/generated/`
+
+---
+
+## 2025-12-23: 引入 Router 節點和 Shared Skills 概念
 
 **決策**: 在 Capability DSL 中新增 Router (路由決策節點) 和 Shared Skills (共用技能) 機制
 

@@ -1,4 +1,4 @@
-# Progress (Updated: 2025-12-22)
+# Progress (Updated: 2025-12-23)
 
 ## Done
 
@@ -7,16 +7,18 @@
 - Prompt Compiler 定位確立
 - Prompt Compiler 實作方案整理到 ROADMAP
 - v0.5.3 「音樂學習助手」設計案例加入 ROADMAP
-  - Intent → Router → Capability → Skill → Tool 完整架構
-  - 新節點：Router (◇)、Clarify
-  - 新機制：shared_skills、output.format
+- v0.5.4 **架構升級：Runtime MCP 動態組裝**
+  - 從「靜態編譯」升級為「Runtime MCP 動態組裝」
+  - 新增 `capability-router` MCP Server 設計
+  - 三重保險機制確保 Agent 讀取 prompt
 
 ## Doing
 
-- Git commit + push v0.5.3
+- Git commit + push v0.5.4
 
 ## Next
 
-- MVP Phase 1: Capability YAML Schema 設計 (含 Router/Shared Skills)
+- 實作 `capability-router` MCP Server
+  - tools: activate(), list_capabilities(), get_capability_status()
+- MVP Phase 1: Capability YAML Schema 設計
 - MVP Phase 2: YAML → Graph 解析器
-- MVP Phase 3: Graph → Markdown 編譯器
