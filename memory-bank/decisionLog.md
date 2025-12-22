@@ -1,5 +1,19 @@
 # Decision Log
 
+## 2025-01-XX: 引入 Router 節點和 Shared Skills 概念
+
+**決策**: 在 Capability DSL 中新增 Router (路由決策節點) 和 Shared Skills (共用技能) 機制
+
+**背景**: 透過「音樂學習助手」設計案例，發現需要：
+1. **Router 節點**: 根據意圖分流到不同 Capability
+2. **Shared Skills**: 多個 Capability 可共用的技能
+3. **Clarify Skill**: 向用戶反問以收集更多資訊
+
+**影響**:
+- DSL 新增 `router` 區塊支援 `llm-classify` 類型
+- 新增 `shared_skills` 區塊
+- Skill 新增 `tool: llm-clarify` 類型
+
 | Date | Decision | Rationale |
 |------|----------|-----------|
 | 2025-12-23 | **Neuro-Symbolic AI 架構** | 結合符號推理的可解釋性與神經網路的靈活性 |
