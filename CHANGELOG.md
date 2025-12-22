@@ -5,6 +5,58 @@
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.0.0/)，
 專案遵循 [語義化版本](https://semver.org/lang/zh-TW/)。
 
+## [0.5.0] - 2025-12-23
+
+### Added
+- **🧠 Neuro-Symbolic AI 架構**
+  - 實現三層架構：Symbolic Layer → Skill Bridge → Tool Layer
+  - 符號層處理結構化能力定義與邏輯
+  - 神經網路層處理 LLM 決策
+  - 工具層執行結構化 API
+
+- **📦 DDD (Domain-Driven Design) Python 核心引擎**
+  - `domain/value_objects/` - 不可變值物件
+    - `node_type.py` - NodeType, EdgeType, ExecutionStatus
+    - `complexity.py` - ComplexityMetrics, ComplexityLevel
+    - `contract.py` - NodeContract, Implementation, BranchCondition
+  - `domain/entities/` - 實體（聚合根）
+    - `node.py` - GraphNode
+    - `edge.py` - GraphEdge
+    - `graph.py` - CapabilityGraph (Aggregate Root)
+  - `application/use_cases/` - 用例
+    - `execute_capability.py` - ExecuteCapabilityUseCase
+  - `application/services/` - 應用服務
+    - `resolver.py` - NodeResolverService, GraphValidatorService
+  - `infrastructure/mcp/` - MCP Server 整合
+    - `server.py` - CapabilityMCPServer (6 tools)
+  - `infrastructure/prompt/` - Prompt 生成
+    - `generator.py` - PromptGenerator, PromptInjector
+
+- **🔌 VS Code Copilot 整合**
+  - MCP Server 提供 6 個 tools：
+    - `execute_capability` - 執行能力圖
+    - `resolve_abstract_node` - 解析抽象節點
+    - `validate_graph` - 驗證圖結構
+    - `get_complexity_metrics` - 計算複雜度
+    - `list_capabilities` - 列出所有能力
+    - `get_capability_status` - 取得執行狀態
+  - Prompt Injection 動態生成 `.prompt.md`
+  - Prompt Injector 注入能力上下文
+
+- **🧪 完整測試套件**
+  - `test_ddd.py` - DDD 架構測試
+  - Domain 層測試 ✅
+  - Application 層測試 ✅
+  - Infrastructure 層測試 ✅
+  - 端到端整合測試 ✅
+
+### Changed
+- 更新 `ARCHITECTURE.md` - 加入 Neuro-Symbolic AI 架構說明
+- 更新 `README.md` - 加入三層架構圖與整合方式
+- 舊版 Python 模組標記為 Legacy，保持向後相容
+
+---
+
 ## [0.4.0] - 2025-12-22
 
 ### Added

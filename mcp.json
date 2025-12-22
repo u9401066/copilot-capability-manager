@@ -1,0 +1,43 @@
+{
+  "name": "capability-engine",
+  "version": "1.0.0",
+  "description": "Capability Engine MCP Server - 讓 VS Code Copilot 能執行能力圖",
+  "mcp": {
+    "servers": {
+      "capability-engine": {
+        "command": "python",
+        "args": ["-m", "src.capability_engine.infrastructure.mcp.server"],
+        "cwd": "${workspaceFolder}",
+        "env": {
+          "PYTHONPATH": "${workspaceFolder}"
+        }
+      }
+    }
+  },
+  "tools": [
+    {
+      "name": "execute_capability",
+      "description": "執行指定的能力圖，會自動解析抽象節點、處理分支和回退"
+    },
+    {
+      "name": "resolve_abstract_node",
+      "description": "解析抽象節點到具體實現"
+    },
+    {
+      "name": "validate_graph",
+      "description": "驗證能力圖的結構正確性"
+    },
+    {
+      "name": "get_complexity_metrics",
+      "description": "計算能力圖的複雜度指標"
+    },
+    {
+      "name": "list_capabilities",
+      "description": "列出所有可用的能力"
+    },
+    {
+      "name": "get_capability_status",
+      "description": "取得能力執行狀態"
+    }
+  ]
+}

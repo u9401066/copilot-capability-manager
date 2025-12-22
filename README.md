@@ -1,13 +1,44 @@
 # Copilot Capability Manager
 
-> 🤖 VS Code 擴充套件 - 透過 GUI 管理 AI Skills 並組合成動態能力（Capabilities）
+> � **Neuro-Symbolic AI** 架構實現 - 結合符號推理與神經網路，讓 AI Agent 能力可組合、可解釋、可追蹤
 
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
+[![Python](https://img.shields.io/badge/Python-3.9+-blue.svg)](https://www.python.org/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.0+-blue.svg)](https://www.typescriptlang.org/)
 [![Status](https://img.shields.io/badge/Status-🚧_Under_Construction-yellow.svg)]()
 
 > ⚠️ **注意：此專案正在積極開發中，API 和功能可能會有重大變更。**
 
 🌐 [繁體中文](README.zh-TW.md) | 📖 [架構設計](ARCHITECTURE.md) | 🗺️ [Roadmap](ROADMAP.md)
+
+## 🧠 Neuro-Symbolic AI 架構
+
+本專案實現了 **Neuro-Symbolic AI** 模式，結合符號系統的可解釋性與神經網路的靈活性：
+
+```
+┌────────────────────────────────────────────────────────────────┐
+│  🔷 SYMBOLIC LAYER (符號層)                                    │
+│     Capability Graph, Contracts, Branch Logic                  │
+│     → 結構化、可驗證、確定性                                     │
+├────────────────────────────────────────────────────────────────┤
+│  🔶 SKILL BRIDGE (技能橋接層)                                   │
+│     LLM Agent + Abstract Node Resolver + Skill Executor        │
+│     → 神經網路決策 + 符號約束 = 可靠執行                          │
+├────────────────────────────────────────────────────────────────┤
+│  🔻 TOOL LAYER (工具層)                                        │
+│     MCP Tools, File System, External APIs                      │
+│     → 結構化 API、確定性操作                                     │
+└────────────────────────────────────────────────────────────────┘
+```
+
+### 為什麼是 Neuro-Symbolic？
+
+| 特性 | 純 Neural | 純 Symbolic | **Neuro-Symbolic** |
+|------|----------|-------------|-------------------|
+| 靈活性 | ✅ 高 | ❌ 低 | ✅ 高 |
+| 可解釋性 | ❌ 黑箱 | ✅ 透明 | ✅ 透明 |
+| 可靠性 | ⚠️ 不穩定 | ✅ 穩定 | ✅ 穩定 |
+| 適應性 | ✅ 強 | ❌ 弱 | ✅ 強 |
 
 ## 🎯 願景
 
@@ -227,11 +258,46 @@ copilot-capability-manager/
 
 | 層級 | 技術 |
 |------|------|
-| **擴充套件** | TypeScript, VS Code Extension API |
+| **Python 核心** | DDD 架構, asyncio, dataclasses |
+| **MCP Server** | capability-engine (6 tools) |
+| **VS Code 擴充** | TypeScript, Extension API |
 | **UI 框架** | React / Vue (Webview) |
 | **資料格式** | YAML (Skills), Markdown (Prompts) |
-| **MCP 整合** | Model Context Protocol SDK |
 | **儲存** | 本地檔案 + VS Code Settings |
+
+## 🔌 Copilot 整合方式
+
+本專案提供三種方式與 VS Code Copilot 整合：
+
+### 1️⃣ MCP Server (推薦)
+
+```json
+// mcp.json
+{
+  "servers": {
+    "capability-engine": {
+      "command": "python",
+      "args": ["-m", "src.capability_engine.infrastructure.mcp.server"]
+    }
+  }
+}
+```
+
+**提供的 Tools:**
+- `execute_capability` - 執行能力圖
+- `resolve_abstract_node` - 解析抽象節點
+- `validate_graph` - 驗證圖結構
+- `get_complexity_metrics` - 計算複雜度
+- `list_capabilities` - 列出所有能力
+- `get_capability_status` - 取得執行狀態
+
+### 2️⃣ Prompt Injection
+
+動態生成 `.prompt.md` 檔案，透過 `/cp.xxx` 觸發。
+
+### 3️⃣ Chat Participant (進階)
+
+註冊 `@capability` 參與者，完整對話控制。
 
 ## 📖 文檔
 

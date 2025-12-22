@@ -2,15 +2,107 @@
 
 | Date | Decision | Rationale |
 |------|----------|-----------|
-| 2025-12-15 | 採用憲法-子法層級架構 | 類似 speckit 的規則層級，可擴展且清晰 |
-| 2025-12-15 | DDD + DAL 獨立架構 | 業務邏輯與資料存取分離，提高可測試性 |
-| 2025-12-15 | Skills 模組化拆分 | 單一職責，可組合使用，易於維護 |
-| 2025-12-15 | Memory Bank 與操作綁定 | 確保專案記憶即時更新，不遺漏 |
-| 2025-12-20 | 重構為 Copilot Capability Manager | 專注於 /cp.xxx 斜線指令系統 |
-| 2025-12-20 | 不使用 agent: 欄位 | 保持 Agent Mode 完整工具權限 |
-| 2025-12-20 | Prompt Files 直接包含完整步驟 | 簡化架構，不需動態更新 AGENTS.md |
+| 2025-12-23 | **Neuro-Symbolic AI 架構** | 結合符號推理的可解釋性與神經網路的靈活性 |
+| 2025-12-23 | **Python DDD + TypeScript UI** | Python 處理圖結構，TypeScript 處理 UI |
+| 2025-12-23 | **MCP Server 作為主要整合方式** | Copilot 原生支援，完整雙向通信 |
+| 2025-12-22 | 圖論基礎的能力組合 | DAG 自然表達迴圈、分支、並行 |
+| 2025-12-22 | 抽象節點 + Fallback 鏈 | 處理輸入不確定性，優雅降級 |
 | 2025-12-21 | **Skill vs Capability 概念區分** | Skill=原子多工具操作, Capability=動態狀態機 |
 | 2025-12-21 | **長任務狀態追蹤機制** | 使用 Checkpoint 檔案實現跨對話狀態持久化 |
+| 2025-12-20 | 重構為 Copilot Capability Manager | 專注於 /cp.xxx 斜線指令系統 |
+| 2025-12-20 | 不使用 agent: 欄位 | 保持 Agent Mode 完整工具權限 |
+| 2025-12-15 | 採用憲法-子法層級架構 | 類似 speckit 的規則層級，可擴展且清晰 |
+| 2025-12-15 | DDD + DAL 獨立架構 | 業務邏輯與資料存取分離，提高可測試性 |
+
+---
+
+## [2025-12-23] Neuro-Symbolic AI 架構決策
+
+### 背景
+Gemini 指出我們正在朝向嚴謹的 Neuro-Symbolic AI 發展方向。
+
+### 分析
+我們的架構確實符合 Neuro-Symbolic 模式：
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│  🔷 SYMBOLIC LAYER (符號層)                                 │
+│  - Capability Graph: 結構化的能力定義                        │
+│  - Node Contracts: 可驗證的輸入/輸出契約                     │
+│  - Branch Logic: 確定性的條件邏輯                            │
+├─────────────────────────────────────────────────────────────┤
+│  🔶 SKILL BRIDGE (技能橋接層)                                │
+│  - LLM Agent: 神經網路的靈活決策                             │
+│  - Abstract Node Resolver: 動態綁定具體實現                  │
+│  - Skill Executor: 執行技能（連接 Neural 和 Symbolic）       │
+├─────────────────────────────────────────────────────────────┤
+│  🔻 TOOL LAYER (工具層)                                     │
+│  - MCP Tools: 結構化 API 調用                                │
+│  - File System: 檔案操作                                     │
+│  - External APIs: 第三方服務                                 │
+└─────────────────────────────────────────────────────────────┘
+```
+
+### 決定
+正式採納 Neuro-Symbolic AI 作為專案核心架構理念：
+
+1. **符號層**負責結構和約束
+2. **神經層**（LLM）負責決策和靈活性
+3. **工具層**負責實際執行
+
+### 理由
+
+| 特性 | 純 Neural | 純 Symbolic | Neuro-Symbolic |
+|------|----------|-------------|----------------|
+| 靈活性 | ✅ 高 | ❌ 低 | ✅ 高 |
+| 可解釋性 | ❌ 黑箱 | ✅ 透明 | ✅ 透明 |
+| 可靠性 | ⚠️ 不穩定 | ✅ 穩定 | ✅ 穩定 |
+| 適應性 | ✅ 強 | ❌ 弱 | ✅ 強 |
+
+### 影響
+- 更新 ARCHITECTURE.md 加入 Neuro-Symbolic 說明
+- 更新 README.md 強調三層架構
+- DDD 架構與三層概念對應：
+  - Domain = Symbolic
+  - Application = Bridge
+  - Infrastructure = Tools
+
+---
+
+## [2025-12-23] Python DDD + TypeScript UI 架構決策
+
+### 背景
+用戶問：「得要用 typescript? 不能構 python 基底 + 最後 typescript 呈現?」
+
+### 決定
+採用混合架構：
+
+```
+Python Core (capability_engine/)
+├── domain/           # 符號層核心
+├── application/      # 業務邏輯
+└── infrastructure/   # MCP Server, Prompt Generator
+
+TypeScript Presentation (extension/)
+├── providers/        # VS Code UI
+├── services/         # Bridge to Python
+└── webview/          # GUI
+```
+
+### 理由
+1. **Python 優勢**：
+   - networkx, graphviz 圖處理
+   - asyncio 非同步執行
+   - dataclasses 簡潔的資料模型
+
+2. **TypeScript 優勢**：
+   - VS Code Extension API
+   - Webview UI
+   - 與 Copilot 原生整合
+
+3. **整合方式**：
+   - MCP Server (stdio/JSON-RPC)
+   - child_process.spawn
 
 ---
 
