@@ -59,6 +59,71 @@
 - 🔀 **條件分支** - 根據結果決定下一步
 - 📊 **狀態追蹤** - 知道「處理到哪裡了」
 
+## 🎨 設計理念
+
+### 📐 圖論基礎的能力組合
+
+我們使用**有向圖（DAG）**來描述能力結構，而非傳統的線性工作流：
+
+```
+┌─────────────────────────────────────────────────────────────┐
+│                    Capability 圖結構                         │
+│                                                             │
+│  [START] ──► [detect] ──► [abstract:read] ──► [write] ──► [END]
+│                               │                             │
+│                    ┌──────────┼──────────┐                  │
+│                    ▼          ▼          ▼                  │
+│               [pdf-reader] [docx] [web-reader]              │
+│                    │                     │                  │
+│                    └──► [fallback] ◄─────┘                  │
+└─────────────────────────────────────────────────────────────┘
+```
+
+**圖的優勢：**
+- 📊 **複雜度量化** - McCabe 環路複雜度 + 迭代/互動權重
+- 🔄 **自然表達迴圈** - 回邊（back edge）清晰標示
+- 🔀 **分支即分叉** - 條件判斷是圖的自然結構
+
+### 🧩 抽象節點與動態解析
+
+**核心問題**：輸入不確定（可能是 PDF、DOCX、線上文檔）怎麼辦？
+
+**解決方案**：抽象節點 + Fallback 鏈
+
+```yaml
+# 定義「做什麼」而不是「怎麼做」
+- id: read_document
+  type: abstract
+  contract:
+    input: [source]
+    output: [content]
+  resolution:
+    strategy: auto_detect
+    implementations:
+      - condition: "*.pdf" → pdf-reader → [ocr-reader, ask-user]
+      - condition: "*.docx" → docx-reader
+      - condition: "http*" → web-reader
+```
+
+**設計原則：**
+- 🎯 **契約優先** - 定義輸入/輸出，不綁定實作
+- ⏱️ **延遲綁定** - 執行時才決定具體實現
+- 🛡️ **優雅降級** - 每個節點都有 Fallback 鏈
+
+> 📖 詳細設計：[ADAPTIVE-GRAPH-DESIGN.md](docs/ADAPTIVE-GRAPH-DESIGN.md)
+
+### 🔥 能力自動觸發
+
+不需要記住 `/cp.xxx` 指令，系統自動識別意圖：
+
+| 觸發條件 | 自動載入能力 |
+|----------|--------------|
+| 提到「報告」「PDF」「文獻」 | write-report |
+| 提到「commit」「提交」 | git-commit |
+| 提到「重構」「refactor」 | code-refactor |
+
+> 📖 詳細設計：[CAPABILITY-ARCHITECTURE.md](docs/CAPABILITY-ARCHITECTURE.md)
+
 ## 💾 Checkpoint 機制（長任務支援）
 
 Copilot 有 context window 限制，長任務無法在單次對話完成。

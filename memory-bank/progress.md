@@ -1,20 +1,18 @@
-# Progress (Updated: 2025-12-21)
+# Progress (Updated: 2025-12-22)
 
 ## Done
 
-- 建立 ValidationService 驗證服務 - 支援 Capability 合併驗證
-- 建立 McpService 服務 - MCP Tools 發現與推薦
-- 更新 SkillManagerProvider - 新增 MCP Tools 顯示功能
-- 更新 CapabilityBuilderProvider - 支援非線性流程 (分支/迴圈/並行)
-- 更新 types/capability.ts - 新增 StepType, LoopConfig 等型別
-- 更新 types/skill.ts - 新增 inputType, outputType, resources 欄位
+- Extension v0.3.0 開發完成並推送到 Git
+- 文獻回顧：孕期併用抗憂鬱藥+BZD 先天性畸形風險研究報告
+- 設計能力架構系統（Capability Architecture）
+- 實作圖論基礎的能力執行引擎（GraphExecutionEngine）
+- 設計自適應圖與 Fallback 機制
+- 更新 README 加入設計理念
 
 ## Doing
 
-- VS Code 擴充功能進階功能開發
+- Git commit 並 push 設計文件
 
 ## Next
 
-- 實作圖形化 Workflow 編輯器 (React Flow)
-- 新增 Capability 合併功能 UI
-- 測試完整 CRUD 流程
+- 實作 TypeScript 版本的 AdaptiveGraphEngine

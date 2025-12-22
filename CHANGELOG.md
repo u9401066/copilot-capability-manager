@@ -5,6 +5,34 @@
 格式基於 [Keep a Changelog](https://keepachangelog.com/zh-TW/1.0.0/)，
 專案遵循 [語義化版本](https://semver.org/lang/zh-TW/)。
 
+## [0.4.0] - 2025-12-22
+
+### Added
+- **能力自動觸發系統**
+  - 新增 `.claude/capabilities/registry.yaml` 能力註冊表
+  - 新增 `.claude/capabilities/write-report/CAPABILITY.md` 範例能力
+  - AGENTS.md 加入自動觸發規則表
+
+- **圖論基礎的能力組合設計**
+  - 新增 `docs/GRAPH-BASED-CAPABILITY-DESIGN.md` 設計文件
+  - 新增 `extension/src/services/GraphExecutionEngine.ts` 執行引擎
+  - 支援 McCabe 環路複雜度計算
+  - 支援節點類型：skill, control.*, interaction.*
+  - 支援邊類型：sequence, conditional, iteration, parallel
+
+- **自適應圖與不確定性處理**
+  - 新增 `docs/ADAPTIVE-GRAPH-DESIGN.md` 設計文件
+  - 抽象節點（Abstract Node）+ 多態實現
+  - Fallback 鏈機制
+  - 延遲展開（Lazy Expansion）
+  - 不確定性量化指標
+
+- **文檔更新**
+  - 新增 `docs/CAPABILITY-ARCHITECTURE.md` 架構文件
+  - README.md 新增「設計理念」區塊
+
+---
+
 ## [0.3.0] - 2025-12-22
 
 ### Added

@@ -1,0 +1,281 @@
+# Capability Registry
+# 能力註冊表 - 定義觸發條件和載入路徑
+
+version: "1.0"
+description: "VS Code Copilot Capability Manager 的能力註冊系統"
+
+# ═══════════════════════════════════════════════════════════════════
+# 能力定義
+# ═══════════════════════════════════════════════════════════════════
+
+capabilities:
+
+  # ─────────────────────────────────────────────────────────────────
+  # 文獻與報告類
+  # ─────────────────────────────────────────────────────────────────
+  
+  write-report:
+    name: "文獻報告撰寫"
+    description: "從 PDF/PMID/搜尋結果產出詳細文獻報告"
+    version: "1.0"
+    
+    triggers:
+      keywords:
+        - "寫報告"
+        - "write report"
+        - "文獻回顧"
+        - "論文分析"
+        - "閱讀PDF"
+        - "分析論文"
+        - "literature review"
+      patterns:
+        - "幫我.*報告"
+        - "分析.*論文"
+        - "閱讀.*PDF"
+        - ".*文獻.*搜尋.*報告"
+      file_extensions:
+        - ".pdf"
+    
+    priority: high
+    path: ".claude/capabilities/write-report/CAPABILITY.md"
+    prompt_file: ".github/prompts/cp.write_report.prompt.md"
+    
+    skills:
+      - pdf-reader
+      - literature-search
+      - literature-filter
+      - note-writer
+      - report-formatter
+    
+    mcp_tools:
+      - pubmed-search
+      - zotero-keeper
+
+  # ─────────────────────────────────────────────────────────────────
+  # 專案管理類
+  # ─────────────────────────────────────────────────────────────────
+  
+  project-deploy:
+    name: "專案部署"
+    description: "測試、打包、Git 提交並推送"
+    version: "1.0"
+    
+    triggers:
+      keywords:
+        - "部署"
+        - "deploy"
+        - "上線"
+        - "發布"
+        - "release"
+      patterns:
+        - "部署.*專案"
+        - "推送.*production"
+    
+    priority: medium
+    path: ".claude/capabilities/project-deploy/CAPABILITY.md"
+    prompt_file: ".github/prompts/cp.deploy.prompt.md"
+    
+    skills:
+      - test-generator
+      - git-precommit
+      - git-pusher
+      - changelog-updater
+
+  project-check:
+    name: "專案檢查"
+    description: "檢查專案狀態與文件完整性"
+    version: "1.0"
+    
+    triggers:
+      keywords:
+        - "檢查專案"
+        - "project check"
+        - "專案狀態"
+      patterns:
+        - "檢查.*專案"
+        - "專案.*狀態"
+    
+    priority: medium
+    path: ".claude/capabilities/project-check/CAPABILITY.md"
+    prompt_file: ".github/prompts/cp.project_check.prompt.md"
+    
+    skills:
+      - project-checker
+      - memory-updater
+
+  # ─────────────────────────────────────────────────────────────────
+  # Git 工作流類
+  # ─────────────────────────────────────────────────────────────────
+  
+  git-commit:
+    name: "Git 提交"
+    description: "Memory 同步 → 文件更新 → Commit"
+    version: "1.0"
+    
+    triggers:
+      keywords:
+        - "commit"
+        - "提交"
+        - "git commit"
+        - "存檔"
+      patterns:
+        - "提交.*變更"
+        - "commit.*changes"
+    
+    priority: high
+    path: ".claude/capabilities/git-commit/CAPABILITY.md"
+    prompt_file: ".github/prompts/cp.commit.prompt.md"
+    
+    skills:
+      - memory-updater
+      - readme-updater
+      - changelog-updater
+      - git-precommit
+
+  # ─────────────────────────────────────────────────────────────────
+  # 程式碼品質類
+  # ─────────────────────────────────────────────────────────────────
+  
+  code-review:
+    name: "程式碼審查"
+    description: "審查程式碼品質、風格和潛在問題"
+    version: "1.0"
+    
+    triggers:
+      keywords:
+        - "review"
+        - "審查"
+        - "code review"
+        - "檢查程式碼"
+      patterns:
+        - "審查.*程式碼"
+        - "review.*code"
+      context:
+        - "有程式碼修改時"
+        - "PR/MR 審查"
+    
+    priority: medium
+    path: ".claude/capabilities/code-review/CAPABILITY.md"
+    
+    skills:
+      - code-reviewer
+      - test-generator
+
+  code-refactor:
+    name: "程式碼重構"
+    description: "重構、拆分、模組化程式碼"
+    version: "1.0"
+    
+    triggers:
+      keywords:
+        - "重構"
+        - "refactor"
+        - "拆分"
+        - "模組化"
+      patterns:
+        - "重構.*程式碼"
+        - "拆分.*模組"
+    
+    priority: medium
+    path: ".claude/capabilities/code-refactor/CAPABILITY.md"
+    
+    skills:
+      - code-refactor
+      - ddd-architect
+
+  # ─────────────────────────────────────────────────────────────────
+  # 維護類
+  # ─────────────────────────────────────────────────────────────────
+  
+  cleanup:
+    name: "專案清理"
+    description: "清理暫存檔案和無用資源"
+    version: "1.0"
+    
+    triggers:
+      keywords:
+        - "清理"
+        - "cleanup"
+        - "clean"
+        - "清除暫存"
+      patterns:
+        - "清理.*專案"
+        - "刪除.*暫存"
+    
+    priority: low
+    path: ".claude/capabilities/cleanup/CAPABILITY.md"
+    prompt_file: ".github/prompts/cp.cleanup.prompt.md"
+    
+    skills:
+      - temp-cleaner
+
+  # ─────────────────────────────────────────────────────────────────
+  # 擴展類
+  # ─────────────────────────────────────────────────────────────────
+  
+  new-skill:
+    name: "新增技能"
+    description: "建立新的 Skill 模組"
+    version: "1.0"
+    
+    triggers:
+      keywords:
+        - "新增skill"
+        - "new skill"
+        - "建立技能"
+      patterns:
+        - "新增.*skill"
+        - "建立.*技能"
+    
+    priority: low
+    path: ".claude/capabilities/new-skill/CAPABILITY.md"
+    prompt_file: ".github/prompts/cp.new_skill.prompt.md"
+
+  new-capability:
+    name: "新增能力"
+    description: "互動式建立新的 Capability"
+    version: "1.0"
+    
+    triggers:
+      keywords:
+        - "新增capability"
+        - "new capability"
+        - "建立能力"
+      patterns:
+        - "新增.*capability"
+        - "建立.*能力"
+    
+    priority: low
+    path: ".claude/capabilities/new-capability/CAPABILITY.md"
+    prompt_file: ".github/prompts/cp.new_capability.prompt.md"
+
+# ═══════════════════════════════════════════════════════════════════
+# 觸發規則配置
+# ═══════════════════════════════════════════════════════════════════
+
+trigger_rules:
+  # 優先級順序：high > medium > low
+  # 當多個 capability 同時匹配時，選擇優先級最高的
+  
+  priority_order:
+    - high
+    - medium
+    - low
+  
+  # 匹配模式
+  match_mode: "first_match"  # first_match | all_match | ask_user
+  
+  # 是否在載入 capability 前詢問用戶確認
+  confirm_before_load: false
+  
+  # 自動觸發的最小信心度 (0-1)
+  auto_trigger_threshold: 0.7
+
+# ═══════════════════════════════════════════════════════════════════
+# 元數據
+# ═══════════════════════════════════════════════════════════════════
+
+metadata:
+  created: "2024-12-22"
+  author: "Copilot Capability Manager"
+  license: "MIT"
