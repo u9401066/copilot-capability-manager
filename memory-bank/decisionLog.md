@@ -271,3 +271,4 @@ memory-bank/
 - 新增 .github/bylaws/ 目錄
 - Skills 需引用相關法規
 | 2025-12-22 | Prompt Compiler 定位：我們不是在執行能力，而是在編譯能力成 Prompt | Agent 外層約束：唯一通道是 AGENTS.md / .prompt.md (純文字)。具象化是為了「管理」和「編譯」，不是為了「執行」。我們需要的是 Prompt Compiler，不是 Workflow Engine。 |
+| 2025-12-22 | Prompt Compiler 工具鏈選型：textX (DSL) + networkx (圖處理) + Jinja2 (模板) + Prompty (格式標準) | 基於 Agent 外層約束，需要結構 → 文字的編譯工具鏈。textX 可定義 DSL 語法，networkx 處理 DAG，Jinja2 渲染模板（微軟 Prompty 也採用），React Flow 可選用於視覺化。參考了 microsoft/prompty、guidance-ai/guidance、stanfordnlp/dspy、dottxt-ai/outlines 等專案的設計理念。 |

@@ -413,6 +413,137 @@ Intent ──1:N──► Capability ──1:N──► Skill ──1:N──►
 
 ---
 
+## �️ Prompt Compiler 實作方案
+
+> 基於「Agent 外層作業」約束，我們需要一個將結構化能力「編譯」成純文字的工具鏈
+
+### 核心架構
+
+```text
+┌────────────────────────────────────────────────────────────┐
+│                Capability Definition (DSL)                  │
+│    YAML/JSON/textX 定義結構化的能力描述                      │
+└────────────────────┬───────────────────────────────────────┘
+                     │
+                     ▼
+┌────────────────────────────────────────────────────────────┐
+│              Prompt Compiler (編譯器)                       │
+│    Graph 解析 → 拓撲排序 → 模板渲染 → 輸出 Markdown          │
+└────────────────────┬───────────────────────────────────────┘
+                     │
+                     ▼
+┌────────────────────────────────────────────────────────────┐
+│              Output: .prompt.md / AGENTS.md                 │
+│    純文字 Prompt，由 Copilot Agent 讀取                     │
+└────────────────────────────────────────────────────────────┘
+```
+
+### 推薦工具套件
+
+| 層次 | 功能 | 推薦工具 | Stars | 說明 |
+|------|------|----------|-------|------|
+| **DSL 定義** | 自定義語法解析 | [textX](https://github.com/textX/textX) | 832★ | Python 純實作，可定義 DSL 語法並生成 AST |
+| **圖處理** | DAG 建模、拓撲排序 | `networkx` | - | Python 標準庫級別，支援 DAG 驗證和遍歷 |
+| **模板引擎** | 結構 → 文字 | [Jinja2](https://github.com/pallets/jinja) | 11.3K★ | 業界標準，已被 Prompty 採用 |
+| **Prompt 格式** | 標準化 Prompt 資產 | [Prompty](https://github.com/microsoft/prompty) | - | 微軟官方，VS Code 整合，YAML frontmatter + template |
+| **視覺化** | 圖編輯器 UI | [React Flow](https://github.com/xyflow/xyflow) | 34.4K★ | 用於 VS Code Extension 的圖編輯 UI |
+
+### 相關 Prompt Engineering 專案
+
+| 專案 | 定位 | 可借鑒 |
+|------|------|--------|
+| [microsoft/prompty](https://github.com/microsoft/prompty) | Prompt 資產格式標準 | YAML frontmatter + Jinja2 模板 |
+| [guidance-ai/guidance](https://github.com/guidance-ai/guidance) | 結構化生成 + 模板 | 約束語法、Token 控制 |
+| [stanfordnlp/dspy](https://github.com/stanfordnlp/dspy) | 宣告式 Prompt 編程 | 編程而非提示的理念 |
+| [dottxt-ai/outlines](https://github.com/dottxt-ai/outlines) | 結構化輸出保證 | 型別驅動的輸出約束 |
+
+### MVP 實作計劃
+
+```yaml
+Phase 1: Capability YAML Schema (v0.5.x)
+  - 定義 Capability YAML 結構
+  - 支援 skills 列表、flow 類型、contracts
+  - 暫不使用 textX（避免過早優化）
+
+Phase 2: YAML → Graph 解析器 (v0.5.x)
+  - 使用 PyYAML 解析
+  - 轉換為 networkx DAG
+  - 驗證圖合法性（無環、連通）
+
+Phase 3: Graph → Markdown 編譯器 (v0.6.x)
+  - 使用 Jinja2 渲染模板
+  - 拓撲排序決定步驟順序
+  - 輸出 .prompt.md 格式
+
+Phase 4: VS Code Extension 整合 (v0.6.x)
+  - 編輯 YAML 時自動編譯
+  - 預覽生成的 Prompt
+  - 錯誤提示與驗證
+```
+
+### 範例：Capability DSL (提案)
+
+```yaml
+# .claude/capabilities/write-report/capability.yaml
+capability: write-report
+description: 撰寫文獻報告的能力
+version: "1.0"
+
+skills:
+  - id: literature-search
+    params:
+      query: "{{topic}}"
+      limit: 20
+  - id: pdf-reader
+    depends_on: [literature-search]
+  - id: note-writer
+    depends_on: [pdf-reader]
+  - id: report-formatter
+    depends_on: [note-writer]
+
+flow: sequence
+
+contracts:
+  preconditions:
+    - "topic 必須為非空字串"
+  postconditions:
+    - "產生 reports/*.md 檔案"
+```
+
+### 編譯輸出範例
+
+```markdown
+# write-report
+
+撰寫文獻報告的能力
+
+## 前置條件
+- topic 必須為非空字串
+
+## 執行步驟
+
+### Step 1: literature-search
+讀取 `.claude/skills/literature-search/SKILL.md` 並依照指引執行
+- 參數: query={{topic}}, limit=20
+
+### Step 2: pdf-reader
+讀取 `.claude/skills/pdf-reader/SKILL.md` 並依照指引執行
+- 依賴: literature-search 完成
+
+### Step 3: note-writer
+讀取 `.claude/skills/note-writer/SKILL.md` 並依照指引執行
+- 依賴: pdf-reader 完成
+
+### Step 4: report-formatter
+讀取 `.claude/skills/report-formatter/SKILL.md` 並依照指引執行
+- 依賴: note-writer 完成
+
+## 後置條件
+- 產生 reports/*.md 檔案
+```
+
+---
+
 ## 📖 參考資源
 
 ### 理論基礎
@@ -428,6 +559,10 @@ Intent ──1:N──► Capability ──1:N──► Skill ──1:N──►
 - [LangGraph](https://github.com/langchain-ai/langgraph) - Agent 狀態圖
 - [Temporal](https://temporal.io/) - 工作流引擎
 - [Prefect](https://www.prefect.io/) - 數據管線
+- [microsoft/prompty](https://github.com/microsoft/prompty) - Prompt 資產標準
+- [guidance-ai/guidance](https://github.com/guidance-ai/guidance) - 結構化生成
+- [stanfordnlp/dspy](https://github.com/stanfordnlp/dspy) - 宣告式 Prompt 編程
+- [dottxt-ai/outlines](https://github.com/dottxt-ai/outlines) - 結構化輸出
 
 ### 標準規範
 

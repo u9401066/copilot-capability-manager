@@ -68,3 +68,12 @@ CONSTITUTION.md (最高原則)
 - NodeContract → 約束描述文字
 - AbstractNode → 選項列表或決策說明
 - BranchCondition → if-then 自然語言
+
+
+## Capability DSL → Graph → Markdown Pipeline
+
+將 YAML/DSL 定義的 Capability 透過三階段編譯成純文字 Prompt：1) DSL 解析為 Graph 結構 2) 拓撲排序決定執行順序 3) Jinja2 模板渲染成 Markdown
+
+### Examples
+
+- .claude/capabilities/write-report/capability.yaml → compiler → .github/prompts/cp.write_report.prompt.md

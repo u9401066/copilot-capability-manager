@@ -2,19 +2,18 @@
 
 ## Done
 
-- v0.5.0 Neuro-Symbolic AI 架構提交
-- Git Push 到 GitHub
-- 研究資料蒐集 (PubMed + GitHub)
-- ROADMAP 研究導向重構
-- Agent 外層約束洞察記錄
+- v0.5.0 Neuro-Symbolic AI 架構 commit
+- Agent 外層約束文件化
+- Prompt Compiler 定位確立
+- Prompt Compiler 實作方案整理到 ROADMAP
 
 ## Doing
 
-- v0.5.1 Prompt Compiler 定位文檔更新
+- Memory Bank 更新
+- Git commit + push
 
 ## Next
 
-- Prompt Compiler 實作原型
-- v0.6.x 符號系統設計
-- 契約語言 DSL 設計
-- VS Code Extension UI 優化
+- MVP Phase 1: Capability YAML Schema 設計
+- MVP Phase 2: YAML → Graph 解析器
+- MVP Phase 3: Graph → Markdown 編譯器
