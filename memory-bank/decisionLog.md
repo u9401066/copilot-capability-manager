@@ -270,3 +270,4 @@ memory-bank/
 - 新增 CONSTITUTION.md
 - 新增 .github/bylaws/ 目錄
 - Skills 需引用相關法規
+| 2025-12-22 | Prompt Compiler 定位：我們不是在執行能力，而是在編譯能力成 Prompt | Agent 外層約束：唯一通道是 AGENTS.md / .prompt.md (純文字)。具象化是為了「管理」和「編譯」，不是為了「執行」。我們需要的是 Prompt Compiler，不是 Workflow Engine。 |

@@ -57,3 +57,14 @@ CONSTITUTION.md (最高原則)
 
 ---
 *Last updated: 2025-12-15*
+
+## Prompt Compiler Pattern
+
+將結構化的 Capability Graph 編譯成純文字 Prompt Markdown，作為與黑盒 Agent 溝通的唯一通道。類似於 TypeScript 編譯成 JavaScript，我們將具象化的能力定義編譯成 Agent 可讀的自然語言指令。
+
+### Examples
+
+- Capability Graph → PromptCompiler → .prompt.md
+- NodeContract → 約束描述文字
+- AbstractNode → 選項列表或決策說明
+- BranchCondition → if-then 自然語言

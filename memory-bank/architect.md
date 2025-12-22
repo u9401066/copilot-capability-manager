@@ -103,3 +103,61 @@
 ---
 *Last updated: 2025-12-15*
 
+
+
+## Architectural Decisions
+
+- Agent 外層作業：我們在 Copilot 外部，無法控制其內部狀態
+- 唯一通道約束：只能透過 .prompt.md 純文字與 Agent 溝通
+- Prompt Compiler 模式：Capability Graph → 編譯 → Markdown Prompt
+- 具象化目的：設計時驗證、視覺化編輯、版本管理、Prompt 編譯
+- 類比：TypeScript → tsc → JavaScript / Capability → compiler → Prompt
+
+
+
+## Design Considerations
+
+- Agent 是黑盒，執行過程不透明
+- 不能直接執行能力，只能描述給 Agent
+- 結構化數據必須「降級」為純文字
+- 編譯策略決定 Prompt 品質
+
+
+
+## Components
+
+### Prompt Compiler
+
+將 Capability Graph 編譯成 .prompt.md
+
+**Responsibilities:**
+
+- Graph 序列化為線性文字
+- Contract 轉換為約束描述
+- Abstract Node 轉換為選項說明
+- 優化 Prompt 結構
+
+### Capability Graph Editor
+
+視覺化編輯能力圖（設計時工具）
+
+**Responsibilities:**
+
+- 拖拉式節點編輯
+- 邊連接管理
+- 契約定義 UI
+- 即時驗證
+
+### Graph Validator
+
+設計時靜態驗證
+
+**Responsibilities:**
+
+- 拓撲檢查（無孤立節點）
+- 循環檢測
+- 契約一致性驗證
+- 類型相容性檢查
+
+
+
