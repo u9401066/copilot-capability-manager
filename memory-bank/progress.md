@@ -1,4 +1,4 @@
-# Progress (Updated: 2025-12-23)
+# Progress (Updated: 2025-12-24)
 
 ## Done
 
@@ -11,10 +11,14 @@
   - 從「靜態編譯」升級為「Runtime MCP 動態組裝」
   - 新增 `capability-router` MCP Server 設計
   - 三重保險機制確保 Agent 讀取 prompt
+- v0.5.5 **新增 Research Agent**
+  - 建立 `.github/agents/research.agent.md`
+  - 整合 PubMed、Zotero、MarkItDown 工具
+  - 委派工作流至 Skills 系統（literature-search, literature-retrieval 等）
 
 ## Doing
 
-- Git commit + push v0.5.4
+- Git commit + push v0.5.5
 
 ## Next
 
